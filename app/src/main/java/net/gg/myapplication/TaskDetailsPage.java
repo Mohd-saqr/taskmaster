@@ -4,27 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.Toast;
 
-public class AllTasks extends AppCompatActivity {
+public class TaskDetailsPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_tasks);
-        setSupportActionBar();
+        setContentView(R.layout.activity_task_details_page);
     }
 
-    void setSupportActionBar() {
+    void setSupportActionBar(){
         // addToolbar
-        Toolbar toolbar = findViewById(R.id.toolbar_all_task);
+        Toolbar toolbar =findViewById(R.id.toolbar_task_details_page);
         setSupportActionBar(toolbar);
         // addTitle to tool bar
         this.setTitle(this.getLocalClassName());
-
-        toolbar.setNavigationOnClickListener(v -> {
-            finish();
-        });
     }
 }

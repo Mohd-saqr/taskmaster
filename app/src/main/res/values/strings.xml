@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="add_task">Add Task</string>
+    <string name="all_task">All Task</string>
+    <string name="text_view_descreption">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam at sem non diam ullamcorper facilisis sit amet ac est. Suspendisse mollis posuere vehicula. Pellentesque dignissim arcu gravida felis pharetra, ut interdum libero laoreet. Proin et dolor eu lorem lacinia posuere. Proin sit amet ipsum lectus. Pellentesque nec accumsan neque, eget porttitor justo. Nullam accumsan sodales metus, id ultrices nunc congue sit amet. Maecenas at dui magna. Nunc faucibus hendrerit hendrerit. Proin nulla ligula, fringilla vel magna ac, pharetra placerat lorem. Vivamus vehicula volutpat lorem. In in tortor iaculis, hendrerit ligula et, eleifend velit. Etiam at nibh convallis, tempus urna non, semper nunc. Curabitur laoreet purus id aliquam imperdiet.</string>
 </resources>

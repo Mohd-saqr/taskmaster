@@ -3,56 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#8d6e63"
     android:layout_height="match_parent"
     tools:context=".AddTask">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
-        android:layout_width="412dp"
+        android:id="@+id/toolbar_add_task"
+        android:layout_width="match_parent"
         android:layout_height="62dp"
-        android:background="#303F9F"
+
+        android:background="@drawable/round_brown"
+        android:layout_margin="10dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-
+        app:navigationIcon="?attr/homeAsUpIndicator"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/logo"
         android:layout_width="62dp"
         android:layout_height="53dp"
         android:src="@drawable/task"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar_add_task"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar2" />
+        app:layout_constraintTop_toTopOf="@+id/toolbar_add_task" />
 
-    <TextView
-        android:id="@+id/taskMasterText2"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="16dp"
-        android:text="Task Master"
-        android:textColor="#0C0401"
-        android:textSize="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.635"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="405dp"
-        android:layout_height="647dp"
-        android:layout_marginTop="48dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
         android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar2"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_add_task"
         app:layout_constraintVertical_bias="1.0">
 
         <TextView
@@ -60,7 +52,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
+            android:layout_marginTop="20dp"
             android:text="Add Task"
+
             android:textColor="@color/black"
             android:textSize="30dp" />
 
@@ -97,10 +91,11 @@
             android:text="Do Something" />
 
         <Button
+            android:id="@+id/btn_submit"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:background="@drawable/custom_btn"
+            android:background="@drawable/round_brown"
 
             android:text="ADD TASK"
             android:textColor="@color/white" />

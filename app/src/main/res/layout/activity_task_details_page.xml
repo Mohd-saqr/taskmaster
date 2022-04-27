@@ -23,12 +23,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:fontFamily="cursive"
+        android:fontFamily="sans-serif"
         android:text="@string/text_view_descreption"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="16sp"
         android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_task_details_page"
-        tools:layout_editor_absoluteX="30dp" />
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_task_details_page" />
 </androidx.constraintlayout.widget.ConstraintLayout>

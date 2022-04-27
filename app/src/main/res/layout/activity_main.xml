@@ -3,34 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#8d6e63"
-
     android:layout_height="match_parent"
+
+    android:background="#8d6e63"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"
         android:layout_width="match_parent"
         android:layout_height="62dp"
-        android:background="@drawable/round_brown"
         android:layout_margin="10dp"
+        android:background="@drawable/round_brown"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="62dp"
-        android:layout_height="53dp"
-        android:src="@drawable/task"
-        app:layout_constraintEnd_toEndOf="@id/toolbar2"
-        app:layout_constraintTop_toTopOf="@id/toolbar2"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar2"
-        tools:layout_editor_absoluteX="349dp"
-        tools:layout_editor_absoluteY="5dp"
-        />
     <TextView
 
         android:id="@+id/text_view_MyTask"
@@ -42,24 +31,71 @@
         android:textSize="30dp"
 
         app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintTop_toBottomOf="@id/toolbar2"
         app:layout_constraintStart_toStartOf="parent"
-       />
+        app:layout_constraintTop_toBottomOf="@id/toolbar2" />
 
-
-    <ImageView
-
-        android:id="@+id/taskImage"
-        android:layout_width="350dp"
-        android:layout_height="400dp"
-        android:layout_marginTop="12dp"
-        android:src="@drawable/defualte_image"
-
+    <LinearLayout
+        android:id="@+id/linear_layout_main_activity"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_MyTask"
-        />
+        app:layout_constraintTop_toBottomOf="@id/text_view_MyTask">
+
+        <TextView
+            android:id="@+id/text_view_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="username"
+            android:layout_marginLeft="15dp"
+            />
+
+        <Button
+            android:id="@+id/task1_btn"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/round_brown"
+            android:text="Finish lab 27"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/text_view_username2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="username"
+            android:layout_marginLeft="15dp"
+            />
+        <Button
+            android:id="@+id/task2_btn"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_margin="20dp"
+
+            android:background="@drawable/round_brown"
+            android:text="ADD some style to main activity"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/text_view_username3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="username"
+            android:layout_marginLeft="15dp"
+            />
+        <Button
+            android:id="@+id/task3_btn"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_margin="20dp"
+
+            android:background="@drawable/round_brown"
+            android:text="finish home page design"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
+
+
     <Button
         android:id="@+id/addTaskBtn"
         style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
@@ -73,11 +109,10 @@ app:layout_constraintTop_toBottomOf="@id/toolbar2"
         app:layout_constraintBottom_toBottomOf="parent"
 
         app:layout_constraintEnd_toStartOf="@id/allTaskBtn"
-
         app:layout_constraintHorizontal_bias="0.447"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/taskImage"
-        app:layout_constraintVertical_bias="0.314" />
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_main_activity" />
 
     <Button
         android:id="@+id/allTaskBtn"
@@ -90,8 +125,7 @@ app:layout_constraintTop_toBottomOf="@id/toolbar2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/addTaskBtn"
-        app:layout_constraintTop_toBottomOf="@id/taskImage"
-        app:layout_constraintVertical_bias="0.314" />
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_main_activity" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

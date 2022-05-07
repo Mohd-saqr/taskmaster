@@ -28,3 +28,29 @@ lorem .
 # Main Activity
 
 ![mainActivity](./app/screenshots/lab27.JPG)
+
+# Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175217.png)
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175239.png)
+
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175250.png)
+
+#  Add Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175300.png)
+
+#  All task  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175310.png)
+
+
+#  Setting  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175319.png)

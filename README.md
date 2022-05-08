@@ -1,5 +1,5 @@
 # taskmaster
-this app use for create task and veiw the task in main activity .
+this app use for create task and view the task in main activity .
 
 ## daily change log 
 ### lab 26:
@@ -28,6 +28,45 @@ lorem .
 # Main Activity
 
 ![mainActivity](./app/screenshots/lab27.JPG)
+
+# Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175217.png)
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175239.png)
+
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175250.png)
+
+#  Add Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175300.png)
+
+#  All task  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175310.png)
+
+
+#  Setting  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175319.png)
+
+
+## lab 27
+------------------------
+
+## daily change log
+### lab 28:
+1- create task class .
+
+2- refactor main activity and add recyclerView
+# Main Activity
+
+![mainActivity](./app/screenshots/lab-28-main.png)
 
 # Task Activity
 

@@ -1,4 +1,4 @@
-package net.gg.myapplication;
+package net.gg.myapplication.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -11,6 +11,8 @@ import android.preference.PreferenceManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
+
+import net.gg.myapplication.R;
 
 public class SettingsPage extends AppCompatActivity {
 

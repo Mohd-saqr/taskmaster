@@ -1,4 +1,4 @@
-package net.gg.myapplication;
+package net.gg.myapplication.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,39 +7,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import net.gg.myapplication.MyModule.Task;
+import net.gg.myapplication.R;
 import net.gg.myapplication.RecyclerView.MyAdapterForRecyclerView;
+import net.gg.myapplication.db.AppDb;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    List<Task>tasks = Arrays.asList(new Task("First task","this is first task", Task.StateEnum.ASSIGNED),
-            new Task("second task","Nam pharetra turpis eu diam pharetra commodo.", Task.StateEnum.COMPLETE),
-                        new Task("third task","Nam pharetra turpis eu diam pharetra commodo.", Task.StateEnum.IN_PROGRESS),
-            new Task("forth task","Vestibulum commodo mi at semper viverra.", Task.StateEnum.ASSIGNED),
-            new Task("five task","Praesent lacinia ante tincidunt facilisis condimentum.", Task.StateEnum.IN_PROGRESS),
-            new Task("random task","Praesent lacinia ante tincidunt facilisis condimentum.", Task.StateEnum.COMPLETE),
-            new Task("random task","Vivamus bibendum neque finibus eros malesuada, ut finibus risus luctus.", Task.StateEnum.IN_PROGRESS),
-            new Task("random task","Vestibulum aliquet nibh eu neque rutrum, ut fringilla odio fermentum..", Task.StateEnum.COMPLETE),
-            new Task("random task","Cras nec neque ac nisi ultrices convallis eget in turpis..", Task.StateEnum.ASSIGNED),
-            new Task("random task","In cursus justo eget scelerisque tempor..", Task.StateEnum.ASSIGNED),
-            new Task("random task","Vivamus bibendum neque finibus eros malesuada, ut finibus risus luctus.", Task.StateEnum.IN_PROGRESS),
-            new Task("random task","Vivamus bibendum neque finibus eros malesuada, ut finibus risus luctus.", Task.StateEnum.IN_PROGRESS)
-            );
+    List<Task>tasks= new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,28 +34,52 @@ public class MainActivity extends AppCompatActivity {
         FunctionalityForBtn();
          setSupportActionBar();
         getShearedPreference();
-        runRecyclerView();
+
+
+
 
 
     }
 
     private void runRecyclerView() {
+        tasks  = AppDb.getInstance(this).doaTask().getAll();
         RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
-        MyAdapterForRecyclerView myAdapterForRecyclerView = new MyAdapterForRecyclerView(tasks, new MyAdapterForRecyclerView.itemClickL() {
-            @Override
-            public void OnItemClick(Task task) {
-                TransferTaskName(task.getTitle(),task.getBody());
-            }
+        MyAdapterForRecyclerView myAdapterForRecyclerView = new MyAdapterForRecyclerView(tasks, task ->
+                TransferTaskName(task.getId()),task -> {
+            /// delete icon
+            AppDb.getInstance(this).doaTask().DeleteTask(task);
+            onResume();
+        },task -> {
+            Intent intent = new Intent(getApplicationContext(),AddTask.class);
+            intent.putExtra("taskId",task.getId());
+            startActivity(intent);
         });
         recyclerView.setAdapter(myAdapterForRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // no task text
+        TextView NoTaskText=findViewById(R.id.text_view_no_task);
+        if(tasks.size()==0){
+            NoTaskText.setText("No Task Yet ... ! ");
+            NoTaskText.setVisibility(View.VISIBLE);
+        }else {
+            NoTaskText.setVisibility(View.INVISIBLE);
+
+        }
+
+
     }
 
     @Override
     protected void onResume() {
         getShearedPreference();
+        runRecyclerView();
         super.onResume();
+
+
+
     }
+
+
 
     void setSupportActionBar(){
         // addToolbar
@@ -92,19 +103,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        /// task btn
-//        Button task1Btn = findViewById(R.id.task1_btn);
-//        Button task2Btn = findViewById(R.id.task2_btn);
-//        Button task3Btn = findViewById(R.id.task3_btn);
-//        task1Btn.setOnClickListener(v -> {
-//            TransferTaskName(task1Btn.getText().toString());
-//        });
-//        task2Btn.setOnClickListener(v -> {
-//            TransferTaskName(task2Btn.getText().toString());
-//        });
-//        task3Btn.setOnClickListener(v -> {
-//            TransferTaskName(task3Btn.getText().toString());
-//        });
+
+
+
 
 
     }
@@ -141,10 +142,11 @@ public class MainActivity extends AppCompatActivity {
 //        textView2.setText((sharedPreferences.getString("userName","username")));
     }
 
-    void TransferTaskName(String taskName ,String taskBody){
+    void TransferTaskName(Long id  ){
         Intent intent = new Intent(getApplicationContext(),TaskDetailsPage.class);
-        intent.putExtra("taskName",taskName);
-        intent.putExtra("TaskBody",taskBody);
+        intent.putExtra("taskId",id);
         startActivity(intent);
     }
+
+
 }

@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#8d6e63"
+    android:background="#564438"
     android:layout_height="match_parent"
-    tools:context=".AddTask">
+    tools:context=".Activity.AddTask">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_add_task"
@@ -32,81 +32,132 @@
         app:layout_constraintTop_toTopOf="@+id/toolbar_add_task" />
 
 
-
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
 
+        android:id="@+id/linearLayout"
+        android:layout_width="412dp"
+        android:layout_height="639dp"
+
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp"
 
+        android:paddingRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_add_task"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_add_task">
+
 
         <TextView
-            android:id="@+id/AddTask"
+            android:id="@+id/text_view_add_task"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp"
             android:text="Add Task"
 
             android:textColor="@color/black"
             android:textSize="30dp" />
 
-        <TextView
-            android:id="@+id/TaskTitle"
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:text="Task Title" />
+            app:errorEnabled="true"
+            app:hintTextColor="@color/black"
 
-        <EditText
-            android:id="@+id/MyTask"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+
+                android:id="@+id/Edit_text_task_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Task Title"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                 />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:text="My Task" />
+            app:hintTextColor="@color/black"
+            app:errorEnabled="true">
 
-        <TextView
-            android:id="@+id/taskDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="Task Description" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/Edit_text_task_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Task description"
+                android:inputType="textMultiLine"
+                android:maxLines="10"
+                android:minHeight="48dp"
+                 />
 
-        <EditText
-            android:id="@+id/doSomething"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:text="Do Something" />
 
-        <Button
-            android:id="@+id/btn_submit"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/round_brown"
+        </com.google.android.material.textfield.TextInputLayout>
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="stats "
+    android:textSize="18sp"/>
 
-            android:text="ADD TASK"
-            android:textColor="@color/white" />
-
-        <TextView
+        <Spinner
+            android:id="@+id/spiner_task_stats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
+            android:minHeight="48dp" />
+
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <Button
+        app:layout_constraintBaseline_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/btn_submit_add_task"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/round_brown"
+
+        android:filterTouchesWhenObscured="false"
+        android:focusableInTouchMode="false"
+        android:text="ADD TASK"
+        android:textColor="@color/white" />
+    <Button
+        app:layout_constraintBaseline_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/btn_save_edit_task"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/round_brown"
+        android:filterTouchesWhenObscured="false"
+
+        android:focusableInTouchMode="false"
+        android:text="Save"
+
+        android:textColor="@color/white"
+        android:visibility="invisible" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/text_view_total_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
             android:layout_marginTop="80dp"
             android:text="Total task : 0"
-            android:textColor="@color/black"
-            android:layout_marginLeft="40dp"/>
+            android:textColor="@color/black" />
 
     </LinearLayout>
 

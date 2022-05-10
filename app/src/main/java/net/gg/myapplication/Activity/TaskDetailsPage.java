@@ -1,4 +1,4 @@
-package net.gg.myapplication;
+package net.gg.myapplication.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -6,7 +6,10 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import net.gg.myapplication.MyModule.Task;
+import net.gg.myapplication.R;
+import net.gg.myapplication.db.AppDb;
 
 public class TaskDetailsPage extends AppCompatActivity {
 
@@ -16,7 +19,10 @@ public class TaskDetailsPage extends AppCompatActivity {
         setContentView(R.layout.activity_task_details_page);
         setSupportActionBar();
         TextView taskDetails = findViewById(R.id.text_view_task_body);
-        taskDetails.setText(getBody());
+        TextView taskStats=findViewById(R.id.text_view_task_stats);
+        taskDetails.setText(getTaskDetails().getBody());
+        taskStats.setText("Stats : "+ getTaskDetails().getState());
+
     }
 
 
@@ -25,20 +31,17 @@ public class TaskDetailsPage extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_task_details_page);
         setSupportActionBar(toolbar);
         // addTitle to tool bar
-        this.setTitle(getTaskName());
+        this.setTitle(getTaskDetails().getTitle());
         toolbar.setNavigationOnClickListener(v -> {
             finish();
         });
     }
 
     //// get task name from main activity and body
-    String getTaskName() {
+    Task getTaskDetails() {
         Intent intent = getIntent();
-        return intent.getStringExtra("taskName");
+        Long taskId=intent.getLongExtra("taskId",0);
+        return AppDb.getInstance(this).doaTask().getTask(taskId);
     }
-    /// get the task body
-    String getBody() {
-        Intent intent = getIntent();
-        return intent.getStringExtra("TaskBody");
-    }
+
 }

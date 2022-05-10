@@ -37,7 +37,7 @@ public class AddTask extends AppCompatActivity {
         super.onResume();
     }
 
-    void FunctionalityForBtn() {
+    public void FunctionalityForBtn() {
         // add functionality for spinner
 
         Spinner spinner = findViewById(R.id.spiner_task_stats);

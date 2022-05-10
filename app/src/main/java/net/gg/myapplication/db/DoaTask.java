@@ -18,12 +18,18 @@ public interface DoaTask {
     Task getTask(Long id);
 
     @Insert
-    void AddTask(Task task);
+  public  void AddTask(Task task);
 
     @Delete
     void DeleteTask(Task task);
 
     @Update
     void UpdateTask(Task task);
+
+    @Query("SELECT * FROM task WHERE title=:title")
+    Task getTaskByTitle(String title);
+
+    @Delete
+    void deleteAll(Task...tasks);
 
 }

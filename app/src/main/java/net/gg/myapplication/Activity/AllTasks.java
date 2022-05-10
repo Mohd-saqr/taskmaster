@@ -1,4 +1,4 @@
-package net.gg.myapplication;
+package net.gg.myapplication.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -6,6 +6,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
+
+import net.gg.myapplication.R;
 
 public class AllTasks extends AppCompatActivity {
 

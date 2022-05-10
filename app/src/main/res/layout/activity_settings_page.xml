@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9e9e9e"
-    tools:context=".SettingsPage">
+    android:background="#564438"
+    tools:context=".Activity.SettingsPage">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_setting_page"

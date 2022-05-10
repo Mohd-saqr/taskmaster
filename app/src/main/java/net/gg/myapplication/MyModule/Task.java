@@ -1,22 +1,28 @@
 package net.gg.myapplication.MyModule;
 
-import java.util.Arrays;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity
 public class Task {
-
+    @PrimaryKey(autoGenerate = true)
+    private Long id;
     private String State;
     private String title;
     private String body;
-    public enum  StateEnum{
-         ASSIGNED,IN_PROGRESS,COMPLETE
-    }
+//    public enum  StateEnum{
+//         ASSIGNED,IN_PROGRESS,COMPLETE
+//    }
 
-    public Task(String title, String body, StateEnum state) {
+    public Task(String title, String body, String state) {
         this.title = title;
         this.body = body;
-        this.State= state.toString();
+        this.State= state;
         
         
+    }
+
+    public Task() {
     }
 
     public String getTitle() {
@@ -41,5 +47,13 @@ public class Task {
 
     public void setState(String state) {
         State = state;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

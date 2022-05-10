@@ -10,22 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
-            android:name=".MainActivity2"
+            android:name=".Activity.SettingsPage"
             android:exported="false" />
         <activity
-            android:name=".SettingsPage"
+            android:name=".Activity.TaskDetailsPage"
             android:exported="false" />
         <activity
-            android:name=".TaskDetailsPage"
+            android:name=".Activity.AllTasks"
             android:exported="false" />
         <activity
-            android:name=".AllTasks"
+            android:name=".Activity.AddTask"
             android:exported="false" />
         <activity
-            android:name=".AddTask"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".Activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

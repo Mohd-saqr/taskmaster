@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#8d6e63"
-    tools:context=".AllTasks">
+    android:background="#564438"
+    tools:context=".Activity.AllTasks">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_all_task"

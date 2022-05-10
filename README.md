@@ -56,7 +56,7 @@ lorem .
 ![mainActivity](./app/screenshots/Screenshot_20220507_175319.png)
 
 
-## lab 27
+
 ------------------------
 
 ## daily change log
@@ -67,6 +67,45 @@ lorem .
 # Main Activity
 
 ![mainActivity](./app/screenshots/lab-28-main.png)
+
+# Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175217.png)
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175239.png)
+
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175250.png)
+
+#  Add Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175300.png)
+
+#  All task  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175310.png)
+
+
+#  Setting  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175319.png)
+
+
+----------------------
+## daily change log
+### lab 29:
+1- implement Room Database
+2- make recycler view render element form database.
+3- implement delete and update for task 
+
+# Main Activity
+
+![mainActivity](./app/screenshots/lab29-main-1.png)
+![mainActivity](./app/screenshots/lab29-main-2.png)
 
 # Task Activity
 

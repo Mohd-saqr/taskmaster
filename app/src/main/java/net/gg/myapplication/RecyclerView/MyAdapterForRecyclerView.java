@@ -18,7 +18,7 @@ import java.util.List;
 
 
 public class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterForRecyclerView.MyViewHolder> {
-    SharedPreferences sharedPreferences;
+
     List<Task> tasks;
     itemClickL itemClickL;
     deleteIconClickLester deleteIconClickLester;
@@ -45,14 +45,12 @@ public class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterForR
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater =LayoutInflater.from(parent.getContext());
        View view= layoutInflater.inflate(R.layout.my_row,parent,false);
-         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(parent.getContext());
+
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyAdapterForRecyclerView.MyViewHolder holder, int position) {
-
-       holder.TaskBy.setText("task by : "+sharedPreferences.getString("userName","username"));
 
         holder.title.setText(tasks.get(position).getTitle());
         holder.body.setText(tasks.get(position).getBody());
@@ -89,7 +87,7 @@ public class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterForR
         TextView title;
         TextView body;
         TextView sate;
-        TextView TaskBy;
+
         ImageView deleteIcon;
         ImageView editIcon;
         public MyViewHolder(@NonNull View itemView) {
@@ -99,7 +97,7 @@ public class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterForR
             title= itemView.findViewById(R.id.text_view_title);
             body=itemView.findViewById(R.id.text_view_body);
             sate=itemView.findViewById(R.id.text_view_state);
-            TaskBy = itemView.findViewById(R.id.text_view_taskBy);
+
 
 
         }

@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -133,11 +135,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void getShearedPreference(){
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        TextView textView = findViewById(R.id.text_view_taskBy);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        TextView textView = findViewById(R.id.text_view_task_by);
 //        TextView textView1 = findViewById(R.id.text_view_username2);
 //        TextView textView2 = findViewById(R.id.text_view_username3);
-//        textView.setText(sharedPreferences.getString("userName","username"));
+        textView.setText(sharedPreferences.getString("userName","Anonymous"));
 //        textView1.setText((sharedPreferences.getString("userName","username")));
 //        textView2.setText((sharedPreferences.getString("userName","username")));
     }

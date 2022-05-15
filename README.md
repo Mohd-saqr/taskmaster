@@ -132,3 +132,39 @@ lorem .
 #  Setting  Activity
 
 ![mainActivity](./app/screenshots/Screenshot_20220507_175319.png)
+
+----------------------------------------------------------------
+
+### lab 29:
+add more Espresso UI tests
+
+# Main Activity
+
+![mainActivity](./app/screenshots/Espresso%20UI%20tests.png)
+
+
+# Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175217.png)
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175239.png)
+
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175250.png)
+
+#  Add Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175300.png)
+
+#  All task  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175310.png)
+
+
+#  Setting  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175319.png)

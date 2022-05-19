@@ -11,7 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import net.gg.myapplication.MyModule.Task;
+import com.amplifyframework.datastore.generated.model.Task;
+
 import net.gg.myapplication.R;
 
 import java.util.List;
@@ -19,27 +20,34 @@ import java.util.List;
 
 public class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterForRecyclerView.MyViewHolder> {
 
-    List<Task> tasks;
+//    List<Task> tasks;
+    List<com.amplifyframework.datastore.generated.model.Task> tasks;
     itemClickL itemClickL;
     deleteIconClickLester deleteIconClickLester;
     EditIconClickLester editIconClickLester;
 
-    public MyAdapterForRecyclerView (List<Task> tasks,itemClickL itemClickL){
+
+    public MyAdapterForRecyclerView (List<com.amplifyframework.datastore.generated.model.Task> tasks){
         this.tasks=tasks;
         this.itemClickL=itemClickL;
     }
-    public MyAdapterForRecyclerView (List<Task> tasks,itemClickL itemClickL,deleteIconClickLester deleteIconClickLester){
+    public MyAdapterForRecyclerView (List<com.amplifyframework.datastore.generated.model.Task> tasks,itemClickL itemClickL,deleteIconClickLester deleteIconClickLester){
         this.tasks=tasks;
         this.itemClickL=itemClickL;
         this.deleteIconClickLester=deleteIconClickLester;
     }
-    public MyAdapterForRecyclerView (List<Task> tasks,itemClickL itemClickL,deleteIconClickLester deleteIconClickLester,EditIconClickLester editIconClickLester){
+    public MyAdapterForRecyclerView (List<com.amplifyframework.datastore.generated.model.Task> tasks,itemClickL itemClickL,deleteIconClickLester deleteIconClickLester,EditIconClickLester editIconClickLester){
         this.tasks=tasks;
         this.itemClickL=itemClickL;
         this.deleteIconClickLester=deleteIconClickLester;
         this.editIconClickLester=editIconClickLester;
     }
+    public MyAdapterForRecyclerView (itemClickL itemClickL,deleteIconClickLester deleteIconClickLester,EditIconClickLester editIconClickLester){
 
+        this.itemClickL=itemClickL;
+        this.deleteIconClickLester=deleteIconClickLester;
+        this.editIconClickLester=editIconClickLester;
+    }
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -72,14 +80,14 @@ public class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterForR
     }
 
     public interface itemClickL{
-        void OnItemClick(Task task);
+        void OnItemClick(com.amplifyframework.datastore.generated.model.Task task);
     }
 
     public interface deleteIconClickLester{
-        void onDeleteClick(Task task);
+        void onDeleteClick(com.amplifyframework.datastore.generated.model.Task task);
     }
     public interface EditIconClickLester{
-        void onEditClick(Task task);
+        void onEditClick(com.amplifyframework.datastore.generated.model.Task task);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -101,5 +109,20 @@ public class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterForR
 
 
         }
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+
+    public void updateData(List<Task> list){
+        tasks.clear();
+        tasks.addAll(list);
+        notifyDataSetChanged();
     }
 }

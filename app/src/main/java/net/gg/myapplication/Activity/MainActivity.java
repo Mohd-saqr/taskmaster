@@ -1,11 +1,13 @@
 package net.gg.myapplication.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
@@ -30,9 +33,11 @@ import com.amplifyframework.auth.AuthChannelEventName;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.amplifyframework.datastore.generated.model.Task;
+import com.amplifyframework.datastore.generated.model.Team;
 import com.amplifyframework.hub.HubChannel;
 
 
+import net.gg.myapplication.Helper.Dialog;
 import net.gg.myapplication.Helper.LoadingProgress;
 import net.gg.myapplication.R;
 import net.gg.myapplication.RecyclerView.MyAdapterForRecyclerView;
@@ -90,36 +95,42 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         getShearedPreference();
-//        runRecyclerView();
-//        progress.startLoading();
         fetchData();
 
-//        progress.startLoading();
+
 
 
     }
 
     private void fetchData() {
-        Amplify.API.query(ModelQuery.list(Task.class), done -> {
-            tasksArray.clear();
-//            progress.stopLoading();
-            for (Task t : done.getData()) tasksArray.add(t);
-            runOnUiThread(() -> {
-                myAdapterForRecyclerView.notifyDataSetChanged();
-                // no task text
-                TextView NoTaskText = findViewById(R.id.text_view_no_task);
-                if (tasksArray.size() == 0) {
-                    NoTaskText.setText("No Task Yet ... ! ");
-                    NoTaskText.setVisibility(View.VISIBLE);
-                } else {
-                    NoTaskText.setVisibility(View.INVISIBLE);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String teamId =preferences.getString("teamId","Noteam");
+        System.out.println(teamId + "   main activity");
+        Amplify.API.query(
 
-                }
+                ModelQuery.list(Task.class, Task.TEAM_TASKS_ID.eq(teamId)),
+                response -> {
 
-            });
+                    if (response.hasData()){
+                        for (Task Task : response.getData()) tasksArray.add(Task);
 
-        }, error -> {
-        });
+                    }
+                    runOnUiThread(() -> {
+                        myAdapterForRecyclerView.notifyDataSetChanged();
+                        // no task text
+                        TextView NoTaskText = findViewById(R.id.text_view_no_task);
+                        if (tasksArray.size() == 0) {
+                            NoTaskText.setText("No Task Yet ... ! ");
+                            NoTaskText.setVisibility(View.VISIBLE);
+                        } else {
+                            NoTaskText.setVisibility(View.INVISIBLE);
+                        }
+                    });
+
+
+                },
+                error -> Log.e("MyAmplifyApp", "Query failure", error)
+        );
 
     }
 
@@ -135,8 +146,8 @@ public class MainActivity extends AppCompatActivity {
         // start activity add task
         Button mAddTaskBtn = findViewById(R.id.addTaskBtn);
         mAddTaskBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), AddTask.class);
-            startActivity(intent);
+            checkTeamName();
+
         });
         // start activity All task
         Button mAllTaskBtn = findViewById(R.id.allTaskBtn);
@@ -196,6 +207,30 @@ public class MainActivity extends AppCompatActivity {
 
         } catch (AmplifyException e) {
             Log.e("TAG", "Could not initialize Amplify", e);
+        }
+
+    }
+
+    private void checkTeamName() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!sharedPreferences.contains("team")){
+            Intent intent = new Intent(getApplicationContext(), SettingsPage.class);
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Select your team")
+                    .setMessage("please select your team first")
+                    .setPositiveButton("Ok", (dialog, which) -> {
+                        startActivity(intent);
+
+                    }).setNegativeButton("Cancel", (dialog, which) -> {
+                        dialog.cancel();
+
+                    }).show();
+
+
+        }else {
+            Intent intent = new Intent(getApplicationContext(), AddTask.class);
+            startActivity(intent);
         }
 
     }

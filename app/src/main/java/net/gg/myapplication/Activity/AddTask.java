@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.View;
@@ -14,10 +16,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amplifyframework.api.graphql.model.ModelMutation;
+import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.auth.AuthChannelEventName;
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.Team;
 import com.amplifyframework.hub.HubChannel;
 
 import net.gg.myapplication.Helper.LoadingProgress;
@@ -34,9 +39,17 @@ public class AddTask extends AppCompatActivity {
         setContentView(R.layout.activity_add_task);
         FunctionalityForBtn();
         setSupportActionBar("Add Task");
+        getTeamId();
 
 
     }
+    String TeamId = "";
+    private void getTeamId() {
+       SharedPreferences sharedPreferences =PreferenceManager.getDefaultSharedPreferences(this);
+       TeamId =sharedPreferences.getString("teamId","Noteam");
+
+    }
+
 
     @Override
     protected void onResume() {
@@ -118,20 +131,25 @@ public class AddTask extends AppCompatActivity {
 
     private void addTaskOnAWS(EditText taskTitleField, EditText taskDescriptionInput, Spinner spinner, Button addTask) {
 
+
         addTask.setOnClickListener(v -> {
             if (taskTitleField.getText().length() < 3)
                 taskTitleField.setError("Minimum 4 characters");
             else if (taskDescriptionInput.getText().length() < 5)
                 taskDescriptionInput.setError("Minimum 6 characters");
             else {
+
                 progress.startLoading();
                 com.amplifyframework.datastore.generated.model.Task task = com.amplifyframework.datastore.generated.model.Task.builder().
                         title(taskTitleField.getText().toString())
                         .state(spinner.getSelectedItem().toString()).
                         body(taskDescriptionInput.getText().toString())
+                        .teamTasksId(TeamId)
                         .build();
                 // add task to data storage aws
                 AddDataStorageAws(task);
+
+
 
 
             }
@@ -140,6 +158,8 @@ public class AddTask extends AppCompatActivity {
 
 
     }
+
+
 
     private void AddDataStorageAws(com.amplifyframework.datastore.generated.model.Task task) {
         Amplify.API.query(ModelMutation.create(task),success->{
@@ -213,29 +233,5 @@ public class AddTask extends AppCompatActivity {
     }
 
 
-
-//    private void StartDataStorage(com.amplifyframework.datastore.generated.model.Task task) {
-//        Handler handler = new Handler();
-//        handler.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                Amplify.API.mutate(
-//                        ModelMutation.create(task),
-//                        success ->{
-//                            progress.stopLoading();
-//                            onBackPressed();
-//                        },
-//                        error -> Log.e("TAG", "Could not save item to API", error)
-//                );
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//
-//
-//    }
 
 }

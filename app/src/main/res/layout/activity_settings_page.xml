@@ -53,17 +53,41 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/text_view_select_your_team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Your Team"
+        android:textColor="@color/white"
+        android:layout_margin="15dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_input_layout"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <Spinner
+        android:id="@+id/spinner_team_tasks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_view_select_your_team"
+        app:layout_constraintStart_toStartOf="parent"
+        android:entries="@array/team_names"
+        android:layout_margin="15dp"
+        android:layout_marginBottom="15dp"
+        />
+
 
     <Button
         android:id="@+id/submit_btn_your_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="96dp"
         android:width="200dp"
         android:background="@drawable/round_brown"
         android:text="Submit"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_input_layout" />
 

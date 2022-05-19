@@ -8,3 +8,9 @@ type Task @model {
   body:String
   state:String
 }
+
+type Team @model {
+  id:ID!
+  name: String
+  tasks:[Task] @hasMany
+}

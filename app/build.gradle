@@ -1,6 +1,9 @@
+
 plugins {
     id 'com.android.application'
+
 }
+
 
 android {
     compileSdk 31
@@ -21,14 +24,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {
-
+    implementation 'com.amplifyframework:core:1.35.3'
+    implementation 'com.amplifyframework:aws-api:1.35.3'
+    implementation 'com.amplifyframework:aws-datastore:1.35.3'
     implementation "androidx.room:room-runtime:2.4.2"
     testImplementation 'junit:junit:4.13.2'
     annotationProcessor "androidx.room:room-compiler:2.4.2"
@@ -42,6 +49,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test:rules:1.4.0'
     androidTestImplementation "androidx.test.espresso:espresso-contrib:3.4.0"
+
 
 
 

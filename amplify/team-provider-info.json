@@ -1,0 +1,41 @@
+{
+  "testone": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-taskmaster-testone-182412-authRole",
+      "UnauthRoleArn": "arn:aws:iam::905622000765:role/amplify-taskmaster-testone-182412-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::905622000765:role/amplify-taskmaster-testone-182412-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-taskmaster-testone-182412-deployment",
+      "UnauthRoleName": "amplify-taskmaster-testone-182412-unauthRole",
+      "StackName": "amplify-taskmaster-testone-182412",
+      "StackId": "arn:aws:cloudformation:eu-central-1:905622000765:stack/amplify-taskmaster-testone-182412/2ecb6c30-d5f5-11ec-bab8-06a13e4a6542",
+      "AmplifyAppId": "d3iektiq0p20e9"
+    }
+  },
+  "testtow": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-taskmaster-testtow-194243-authRole",
+      "UnauthRoleArn": "arn:aws:iam::905622000765:role/amplify-taskmaster-testtow-194243-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::905622000765:role/amplify-taskmaster-testtow-194243-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-taskmaster-testtow-194243-deployment",
+      "UnauthRoleName": "amplify-taskmaster-testtow-194243-unauthRole",
+      "StackName": "amplify-taskmaster-testtow-194243",
+      "StackId": "arn:aws:cloudformation:eu-central-1:905622000765:stack/amplify-taskmaster-testtow-194243/26b0ae60-d600-11ec-abaa-0abe5ad33e44",
+      "AmplifyAppId": "d3iektiq0p20e9"
+    }
+  },
+  "testthree": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-taskmaster-testthree-204841-authRole",
+      "UnauthRoleArn": "arn:aws:iam::905622000765:role/amplify-taskmaster-testthree-204841-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::905622000765:role/amplify-taskmaster-testthree-204841-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-taskmaster-testthree-204841-deployment",
+      "UnauthRoleName": "amplify-taskmaster-testthree-204841-unauthRole",
+      "StackName": "amplify-taskmaster-testthree-204841",
+      "StackId": "arn:aws:cloudformation:eu-central-1:905622000765:stack/amplify-taskmaster-testthree-204841/5d961790-d609-11ec-96ae-0644236dcd1e",
+      "AmplifyAppId": "d3iektiq0p20e9"
+    }
+  }
+}

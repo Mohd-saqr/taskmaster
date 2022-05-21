@@ -12,9 +12,7 @@ this app use for create task and view the task in main activity .
 
 ![mainActivity](./app/screenshots/mainA.JPG)
 
-## daily change log
-## lab 31
-------------------------
+
 
 ## daily change log 
 ### lab 27:
@@ -135,8 +133,8 @@ lorem .
 ![mainActivity](./app/screenshots/Screenshot_20220507_175319.png)
 
 ----------------------------------------------------------------
-
-### lab 29:
+## daily change log
+### lab 30:
 add more Espresso UI tests
 
 # Main Activity
@@ -169,3 +167,111 @@ add more Espresso UI tests
 #  Setting  Activity
 
 ![mainActivity](./app/screenshots/Screenshot_20220507_175319.png)
+
+
+## daily change log
+### lab 31:
+add more Espresso UI tests
+
+# Main Activity
+
+![mainActivity](./app/screenshots/Espresso%20UI%20tests.png)
+
+
+# Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175217.png)
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175239.png)
+
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175250.png)
+
+#  Add Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175300.png)
+
+#  All task  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175310.png)
+
+
+#  Setting  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175319.png)
+
+## daily change log
+### lab 32:
+connect own app on aws and use the amplify api instead for Room database 
+
+# Main Activity
+
+![mainActivity](./app/screenshots/Espresso%20UI%20tests.png)
+
+
+# Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175217.png)
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175239.png)
+
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175250.png)
+
+#  Add Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175300.png)
+
+#  All task  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175310.png)
+
+
+#  Setting  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175319.png)
+
+
+## daily change log
+### lab 32:
+create the team entity and , make the user to choose his team 
+and after that show only task about this team 
+
+# Main Activity
+
+![mainActivity](./app/screenshots/lab-33-main.png)
+
+
+# Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175217.png)
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175239.png)
+
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175250.png)
+
+#  Add Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175300.png)
+
+#  All task  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175310.png)
+
+
+#  Setting  Activity
+
+![mainActivity](./app/screenshots/lab-33-setting.png)

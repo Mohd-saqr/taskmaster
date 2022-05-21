@@ -4,12 +4,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,20 +29,31 @@ import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Team;
 
+import net.gg.myapplication.Helper.LoadingProgress;
 import net.gg.myapplication.R;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class SettingsPage extends AppCompatActivity {
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    ;
+    String teamId = "";
+    LoadingProgress progress = new LoadingProgress(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_page);
         setSupportActionBar();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = sharedPreferences.edit();
         FunctionalityForBtn();
-
+        execution();
 
     }
-
 
     void setSupportActionBar() {
         // addToolbar
@@ -48,39 +69,71 @@ public class SettingsPage extends AppCompatActivity {
     void FunctionalityForBtn() {
         // add username to SharedPreferences
         Button buttonSubmit = findViewById(R.id.submit_btn_your_name);
-        Spinner teamName = findViewById(R.id.spinner_team_tasks);
+        TextView textView = findViewById(R.id.edit_text_enter_your_name);
+        if (sharedPreferences.contains("userName"))
+            textView.setText(sharedPreferences.getString("userName", ""));
         buttonSubmit.setOnClickListener(v -> {
-            TextView textView = findViewById(R.id.edit_text_enter_your_name);
+
             if (textView.getText().length() < 4) {
                 textView.setError("Min length 4 required");
             } else {
                 String username = textView.getText().toString();
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                // set username
+                editor.putString("userName", username);
+                editor.apply();
+                // save username
+                //save team id
+                Message();
+            }
+
+        });
+
+    }
+
+    private void execution() {
 
 
+        Spinner teamName = findViewById(R.id.spinner_team_tasks);
 
+        teamName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Amplify.API.query(
                         ModelQuery.list(Team.class, Team.NAME.eq(teamName.getSelectedItem().toString())),
                         response -> {
                             for (Team todo : response.getData()) {
-                                editor.putString("userName", username);
-                                editor.putString("teamId",todo.getId());
+
+                                editor.putString("teamId", todo.getId());
+                                editor.putString("teamName", teamName.getSelectedItem().toString());
                                 editor.apply();
+
                             }
                         },
                         error -> Log.e("MyAmplifyApp", "Query failure", error)
                 );
 
 
-
-                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-                finish();
             }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
         });
 
+
     }
+
+
+    private void Message() {
+        new AlertDialog.Builder(this).
+                setMessage("Success")
+                .setTitle("Change Team Success")
+                .setPositiveButton("Ok", (dialog, witch) -> {
+                    startActivity(new Intent(SettingsPage.this, MainActivity.class));
+                    finish();
+                }).show();
+
+    }
+
+
 }

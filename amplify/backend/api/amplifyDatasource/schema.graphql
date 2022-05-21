@@ -1,6 +1,6 @@
 
 
-input AMPLIFY { globalAuthRule: AuthRule = { allow: public , operations: [create, update, delete]} } # FOR TESTING ONLY!
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
 type Task @model {
   id: ID!

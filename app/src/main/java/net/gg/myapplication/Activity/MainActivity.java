@@ -52,7 +52,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     LoadingProgress progress = new LoadingProgress(MainActivity.this);
-    Handler handler;
     MyAdapterForRecyclerView myAdapterForRecyclerView;
     static List<com.amplifyframework.datastore.generated.model.Task> tasksArray = new ArrayList<>();
     ;
@@ -76,11 +75,13 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
         myAdapterForRecyclerView = new MyAdapterForRecyclerView(tasksArray, task ->
                 TransferTaskName(task.getId()), task -> {
+            Task t1 =Task.builder().body(task.getBody())
+                    .state(task.getState())
+                            .title(task.getTitle())
+                                    .id(task.getId()).build();
             /// delete icon
-            Amplify.API.mutate(ModelMutation.delete(task),
-                    response -> Log.i("MyAmplifyApp", "Todo with id: "),
-                    error -> Log.e("MyAmplifyApp", "Create failed", error)
-            );
+          Amplify.API.mutate(ModelMutation.delete(task),rs->{}
+          ,err->{});
 
         }, task -> {
             Intent intent = new Intent(getApplicationContext(), AddTask.class);
@@ -98,20 +99,18 @@ public class MainActivity extends AppCompatActivity {
         fetchData();
 
 
-
-
     }
 
     private void fetchData() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String teamId =preferences.getString("teamId","Noteam");
+        String teamId = preferences.getString("teamId", "Noteam");
         System.out.println(teamId + "   main activity");
         Amplify.API.query(
 
                 ModelQuery.list(Task.class, Task.TEAM_TASKS_ID.eq(teamId)),
                 response -> {
-
-                    if (response.hasData()){
+                    tasksArray.clear();
+                    if (response.hasData()) {
                         for (Task Task : response.getData()) tasksArray.add(Task);
 
                     }
@@ -155,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), AllTasks.class);
             startActivity(intent);
 
+
         });
 
 
@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.setting_menu:
                 Intent intent = new Intent(getApplicationContext(), SettingsPage.class);
                 startActivity(intent);
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -185,35 +186,37 @@ public class MainActivity extends AppCompatActivity {
     void getShearedPreference() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         TextView textView = findViewById(R.id.text_view_task_by);
-//        TextView textView1 = findViewById(R.id.text_view_username2);
+        TextView teamName = findViewById(R.id.text_view_team);
+        // set the team name on main activity
+        teamName.setText(sharedPreferences.getString("teamName","No team"));
 //        TextView textView2 = findViewById(R.id.text_view_username3);
         textView.setText(sharedPreferences.getString("userName", "Anonymous"));
 //        textView1.setText((sharedPreferences.getString("userName","username")));
 //        textView2.setText((sharedPreferences.getString("userName","username")));
     }
 
+    // using intent pass the task id to display task page
     void TransferTaskName(String id) {
         Intent intent = new Intent(getApplicationContext(), TaskDetailsPage.class);
         intent.putExtra("taskId", id);
         startActivity(intent);
     }
-
+    /// sum stuff to configure amplify
     void configureAwsAmplify() {
         try {
             Amplify.addPlugin(new AWSApiPlugin());
             Amplify.addPlugin(new AWSDataStorePlugin());
             Amplify.configure(getApplicationContext());
 
-
         } catch (AmplifyException e) {
             Log.e("TAG", "Could not initialize Amplify", e);
         }
 
     }
-
+    /// before add task check if the user choose him team
     private void checkTeamName() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!sharedPreferences.contains("team")){
+        if (!sharedPreferences.contains("teamId")) {
             Intent intent = new Intent(getApplicationContext(), SettingsPage.class);
 
             new AlertDialog.Builder(this)
@@ -222,14 +225,17 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton("Ok", (dialog, which) -> {
                         startActivity(intent);
 
+
                     }).setNegativeButton("Cancel", (dialog, which) -> {
                         dialog.cancel();
 
                     }).show();
 
 
-        }else {
+        } else {
             Intent intent = new Intent(getApplicationContext(), AddTask.class);
+            intent.putExtra("totalTask",String.valueOf(tasksArray.size()));
+
             startActivity(intent);
         }
 

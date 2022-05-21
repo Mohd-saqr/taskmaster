@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#564438"
+    android:background="#F4EEEA"
     tools:context=".Activity.SettingsPage">
 
     <androidx.appcompat.widget.Toolbar
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="Enter Your Name"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select Your Team"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_margin="15dp"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

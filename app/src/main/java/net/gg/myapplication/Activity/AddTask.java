@@ -55,7 +55,8 @@ public class AddTask extends AppCompatActivity {
     protected void onResume() {
         /// set total task number
         TextView TotalTask = findViewById(R.id.text_view_total_task);
-        TotalTask.setText("Total Task : " + String.valueOf(AppDb.getInstance(this).doaTask().getAll().size()));
+        Intent intent=getIntent();
+        TotalTask.setText("Total Task : " + getIntent().getStringExtra("totalTask"));
         super.onResume();
     }
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:background="#564438"
+    android:background="#F4EEEA"
     tools:context=".Activity.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -60,6 +60,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.053"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar2" />
+
+
+    <TextView
+        android:id="@+id/text_view_team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Team"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/black"
+        app:layout_constraintHorizontal_bias="0.884"
+        app:layout_constraintStart_toEndOf="@id/text_view_MyTask"
         app:layout_constraintTop_toBottomOf="@id/toolbar2" />
 
     <Button

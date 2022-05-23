@@ -3,12 +3,14 @@ package net.gg.myapplication.RecyclerView;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amplifyframework.datastore.generated.model.Task;
@@ -18,13 +20,15 @@ import net.gg.myapplication.R;
 import java.util.List;
 
 
-public class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterForRecyclerView.MyViewHolder> {
+public  class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterForRecyclerView.MyViewHolder> implements PopupMenu.OnMenuItemClickListener {
 
 //    List<Task> tasks;
     List<com.amplifyframework.datastore.generated.model.Task> tasks;
     itemClickL itemClickL;
     deleteIconClickLester deleteIconClickLester;
     EditIconClickLester editIconClickLester;
+    PopupMenu.OnMenuItemClickListener onMenuItemClickListener;
+
 
 
     public MyAdapterForRecyclerView (List<com.amplifyframework.datastore.generated.model.Task> tasks){
@@ -66,18 +70,26 @@ public class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterForR
         holder.itemView.setOnClickListener(v -> {
             itemClickL.OnItemClick(tasks.get(position));
         });
-        holder.deleteIcon.setOnClickListener(v -> {
-            deleteIconClickLester.onDeleteClick(tasks.get(position));
+        holder.menu.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(v.getContext(),v);
+            popupMenu.inflate(R.menu.recycler_view_menu);
+            popupMenu.show();
+            popupMenu.setOnMenuItemClickListener(this);
+
         });
-        holder.editIcon.setOnClickListener(v -> {
-            editIconClickLester.onEditClick(tasks.get(position));
-        });
+
     }
 
     @Override
     public int getItemCount() {
         return tasks.size();
     }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        return false;
+    }
+
 
     public interface itemClickL{
         void OnItemClick(com.amplifyframework.datastore.generated.model.Task task);
@@ -90,25 +102,27 @@ public class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterForR
         void onEditClick(com.amplifyframework.datastore.generated.model.Task task);
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder  {
 
         TextView title;
         TextView body;
         TextView sate;
+        ImageView menu;
 
-        ImageView deleteIcon;
-        ImageView editIcon;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            editIcon=itemView.findViewById(R.id.icon_edit_task);
-             deleteIcon = itemView.findViewById(R.id.icon_delete_task);
+            menu=itemView.findViewById(R.id.recycler_menu_icon);
             title= itemView.findViewById(R.id.text_view_title);
             body=itemView.findViewById(R.id.text_view_body);
             sate=itemView.findViewById(R.id.text_view_state);
 
 
 
+
+
         }
+
     }
 
     public List<Task> getTasks() {
@@ -125,4 +139,16 @@ public class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterForR
         tasks.addAll(list);
         notifyDataSetChanged();
     }
+
+
+
+
+    public interface test{
+        void on(com.amplifyframework.datastore.generated.model.Task task);
+    }
+
+
+
+
+
 }

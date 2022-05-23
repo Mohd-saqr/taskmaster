@@ -241,9 +241,46 @@ connect own app on aws and use the amplify api instead for Room database
 
 
 ## daily change log
-### lab 32:
+### lab 33:
 create the team entity and , make the user to choose his team 
 and after that show only task about this team 
+
+# Main Activity
+
+![mainActivity](./app/screenshots/lab-33-main.png)
+
+
+# Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175217.png)
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175239.png)
+
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175250.png)
+
+#  Add Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175300.png)
+
+#  All task  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175310.png)
+
+
+#  Setting  Activity
+
+![mainActivity](./app/screenshots/lab-33-setting.png)
+
+
+
+## daily change log
+### lab 32:
+Build apk for app 
 
 # Main Activity
 

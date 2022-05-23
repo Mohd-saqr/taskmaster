@@ -3,6 +3,7 @@ package net.gg.myapplication.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -73,34 +74,49 @@ public class MainActivity extends AppCompatActivity {
         // this line for room db
 //        tasksArray = AppDb.getInstance(this).doaTask().getAll();
         RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
-        myAdapterForRecyclerView = new MyAdapterForRecyclerView(tasksArray, task ->
-                // on click to item on recycler..
-                TransferTaskName(task.getId()), task -> {
-            // delete button
-            new android.app.AlertDialog.Builder(this)
-                    .setTitle("Delete Task ")
-                    .setMessage("Are you sure to delete " + task.getTitle())
-                    .setPositiveButton("Yes", (dialog, which) -> {
-                        /// delete icon
-                        Amplify.API.mutate(ModelMutation.delete(task), rs -> {
-                                    System.out.println("done");
-                                    runOnUiThread(() -> {
-                                        fetchData();
-                                    });
-                                }
-                                , err -> {
-                                });
-                    }).setNegativeButton("Cancel", (dialog, which) -> {
-                        dialog.cancel();
-                    }).setIcon(R.drawable.ic_warning)
-                    .show();
+        myAdapterForRecyclerView = new MyAdapterForRecyclerView(task -> {
+            //on item click
+            TransferTaskName(task.getId());
 
-            // edit button
-        }, task -> {
-            Intent intent = new Intent(getApplicationContext(), AddTask.class);
-            intent.putExtra("taskId", task.getId());
-            startActivity(intent);
-        });
+        },tasksArray,((popupMenu, task) -> {
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()){
+                        //edit
+                        case R.id.eit_task:
+                        {
+                            Intent intent = new Intent(getApplicationContext(), AddTask.class);
+                            intent.putExtra("taskId", task.getId());
+                            startActivity(intent);
+                        }break;
+
+                        case R.id.delete_task:
+                        {
+                            new android.app.AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("Delete Task ")
+                                    .setMessage("Are you sure to delete " + task.getTitle())
+                                    .setPositiveButton("Yes", (dialog, which) -> {
+                                        /// delete icon
+                                        Amplify.API.mutate(ModelMutation.delete(task), rs -> {
+                                                    System.out.println("done");
+                                                    runOnUiThread(() -> {
+                                                        fetchData();
+                                                    });
+                                                }
+                                                , err -> {
+                                                });
+                                    }).setNegativeButton("Cancel", (dialog, which) -> {
+                                        dialog.cancel();
+                                    }).setIcon(R.drawable.ic_warning)
+                                    .show();
+                        }
+                        break;
+                    }
+                    return false;
+                }
+            });
+        }));
         recyclerView.setAdapter(myAdapterForRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

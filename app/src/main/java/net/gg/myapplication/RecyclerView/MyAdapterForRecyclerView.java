@@ -20,19 +20,25 @@ import net.gg.myapplication.R;
 import java.util.List;
 
 
-public  class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterForRecyclerView.MyViewHolder> implements PopupMenu.OnMenuItemClickListener {
+public  class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterForRecyclerView.MyViewHolder> {
 
 //    List<Task> tasks;
     List<com.amplifyframework.datastore.generated.model.Task> tasks;
     itemClickL itemClickL;
     deleteIconClickLester deleteIconClickLester;
     EditIconClickLester editIconClickLester;
-    PopupMenu.OnMenuItemClickListener onMenuItemClickListener;
-
+    ItemMenuLis itemMenuLis;
+    PopupMenu popupMenu;
 
 
     public MyAdapterForRecyclerView (List<com.amplifyframework.datastore.generated.model.Task> tasks){
         this.tasks=tasks;
+        this.itemClickL=itemClickL;
+    }
+    public MyAdapterForRecyclerView (itemClickL itemClickL,List<com.amplifyframework.datastore.generated.model.Task> tasks
+            ,ItemMenuLis itemMenuLis){
+        this.tasks=tasks;
+        this.itemMenuLis=itemMenuLis;
         this.itemClickL=itemClickL;
     }
     public MyAdapterForRecyclerView (List<com.amplifyframework.datastore.generated.model.Task> tasks,itemClickL itemClickL,deleteIconClickLester deleteIconClickLester){
@@ -52,6 +58,7 @@ public  class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterFor
         this.deleteIconClickLester=deleteIconClickLester;
         this.editIconClickLester=editIconClickLester;
     }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -71,12 +78,13 @@ public  class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterFor
             itemClickL.OnItemClick(tasks.get(position));
         });
         holder.menu.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(v.getContext(),v);
+             popupMenu = new PopupMenu(v.getContext(),v);
             popupMenu.inflate(R.menu.recycler_view_menu);
             popupMenu.show();
-            popupMenu.setOnMenuItemClickListener(this);
-
+            itemMenuLis.OnCreateItemMenuTest(popupMenu,tasks.get(position));
         });
+
+
 
     }
 
@@ -85,10 +93,7 @@ public  class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterFor
         return tasks.size();
     }
 
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        return false;
-    }
+
 
 
     public interface itemClickL{
@@ -100,6 +105,9 @@ public  class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterFor
     }
     public interface EditIconClickLester{
         void onEditClick(com.amplifyframework.datastore.generated.model.Task task);
+    }
+    public interface ItemMenuLis{
+        void OnCreateItemMenuTest(PopupMenu popupMenu,com.amplifyframework.datastore.generated.model.Task task);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder  {
@@ -143,9 +151,7 @@ public  class MyAdapterForRecyclerView extends RecyclerView.Adapter<MyAdapterFor
 
 
 
-    public interface test{
-        void on(com.amplifyframework.datastore.generated.model.Task task);
-    }
+
 
 
 

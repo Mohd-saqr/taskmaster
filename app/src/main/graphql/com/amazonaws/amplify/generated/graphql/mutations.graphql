@@ -10,9 +10,6 @@ mutation CreateTask(
     state
     createdAt
     updatedAt
-    _version
-    _deleted
-    _lastChangedAt
     teamTasksId
   }
 }
@@ -27,9 +24,6 @@ mutation UpdateTask(
     state
     createdAt
     updatedAt
-    _version
-    _deleted
-    _lastChangedAt
     teamTasksId
   }
 }
@@ -44,9 +38,6 @@ mutation DeleteTask(
     state
     createdAt
     updatedAt
-    _version
-    _deleted
-    _lastChangedAt
     teamTasksId
   }
 }
@@ -65,19 +56,12 @@ mutation CreateTeam(
         state
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         teamTasksId
       }
       nextToken
-      startedAt
     }
     createdAt
     updatedAt
-    _version
-    _deleted
-    _lastChangedAt
   }
 }
 mutation UpdateTeam(
@@ -95,19 +79,12 @@ mutation UpdateTeam(
         state
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         teamTasksId
       }
       nextToken
-      startedAt
     }
     createdAt
     updatedAt
-    _version
-    _deleted
-    _lastChangedAt
   }
 }
 mutation DeleteTeam(
@@ -125,18 +102,11 @@ mutation DeleteTeam(
         state
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         teamTasksId
       }
       nextToken
-      startedAt
     }
     createdAt
     updatedAt
-    _version
-    _deleted
-    _lastChangedAt
   }
 }

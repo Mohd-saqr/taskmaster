@@ -1,16 +1,22 @@
 package net.gg.myapplication;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.AllOf.allOf;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.hamcrest.core.StringContains.containsString;
 
 import android.view.View;
 import android.widget.Adapter;
@@ -139,8 +145,10 @@ public class ExampleInstrumentedTest {
         openActionBarOverflowOrOptionsMenu(mainActivity.getActivity());
         onView(withText("Setting"))
                 .perform(click());
+        onView(withId(R.id.edit_text_enter_your_name)).perform(clearText());
         onView(withId(R.id.edit_text_enter_your_name)).perform(typeText("mohammed"));
         onView(withId(R.id.submit_btn_your_name)).perform(click());
+        onView(withText("Ok")).perform(click());
         onView(withText("mohammed")).check(matches(isDisplayed()));
 
     }
@@ -151,11 +159,26 @@ public class ExampleInstrumentedTest {
      */
     @Test
     public void IsRecyclerViewIsDisplay() {
-
-
         onView(withId(R.id.my_recycler_view)).check(matches(isDisplayed()));
 
     }
 
+
+    /**
+     * assert if i can change team and display the task for the team
+     */
+
+    @Test
+    public void isChangeTeam(){
+        openActionBarOverflowOrOptionsMenu(mainActivity.getActivity());
+        onView(withText("Setting"))
+                .perform(click());
+        onView(withId(R.id.spinner_team_tasks)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is("Team2"))).perform(click());
+        onView(withId(R.id.spinner_team_tasks)).check(matches(withSpinnerText(containsString("Team2"))));
+        onView(withId(R.id.submit_btn_your_name)).perform(click());
+        onView(withText("Ok")).perform(click());
+        onView(withText("Team2")).check(matches(isDisplayed()));
+    }
 
 }

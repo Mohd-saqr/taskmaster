@@ -33,6 +33,8 @@ import net.gg.myapplication.db.AppDb;
 
 public class AddTask extends AppCompatActivity {
     LoadingProgress progress = new LoadingProgress(AddTask.this);
+    com.amplifyframework.datastore.generated.model.Task taskFromAws;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,13 +42,13 @@ public class AddTask extends AppCompatActivity {
         FunctionalityForBtn();
         setSupportActionBar("Add Task");
         getTeamId();
-
-
     }
+
     String TeamId = "";
+
     private void getTeamId() {
-       SharedPreferences sharedPreferences =PreferenceManager.getDefaultSharedPreferences(this);
-       TeamId =sharedPreferences.getString("teamId","Noteam");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        TeamId = sharedPreferences.getString("teamId", "Noteam");
 
     }
 
@@ -55,7 +57,7 @@ public class AddTask extends AppCompatActivity {
     protected void onResume() {
         /// set total task number
         TextView TotalTask = findViewById(R.id.text_view_total_task);
-        Intent intent=getIntent();
+        Intent intent = getIntent();
         TotalTask.setText("Total Task : " + getIntent().getStringExtra("totalTask"));
         super.onResume();
     }
@@ -77,6 +79,7 @@ public class AddTask extends AppCompatActivity {
         EditText taskDescriptionInput = findViewById(R.id.Edit_text_task_description);
         addTaskOnAWS(taskTitleField, taskDescriptionInput, spinner, addTask);
         updateTask(taskTitleField, taskDescriptionInput, spinner, saveButton);
+        getTaskForEdit(spinner, addTask, taskTitleField, taskDescriptionInput, saveButton);
         /**
          * this method for previous lab
          */
@@ -108,11 +111,13 @@ public class AddTask extends AppCompatActivity {
                         title(taskTitleField.getText().toString())
                         .state(spinner.getSelectedItem().toString()).
                         body(taskDescriptionInput.getText().toString())
+                        .teamTasksId(taskFromAws.getTeamTasksId())
+                        .id(taskFromAws.getId())
                         .build();
                 progress.stopLoading();
                 Amplify.API.mutate(
                         ModelMutation.update(task),
-                        success ->{
+                        success -> {
 
                             finish();
                         },
@@ -151,8 +156,6 @@ public class AddTask extends AppCompatActivity {
                 AddDataStorageAws(task);
 
 
-
-
             }
 
         });
@@ -161,12 +164,11 @@ public class AddTask extends AppCompatActivity {
     }
 
 
-
     private void AddDataStorageAws(com.amplifyframework.datastore.generated.model.Task task) {
-        Amplify.API.query(ModelMutation.create(task),success->{
+        Amplify.API.query(ModelMutation.create(task), success -> {
             progress.stopLoading();
             finish();
-        },error->{
+        }, error -> {
 
         });
     }
@@ -203,6 +205,8 @@ public class AddTask extends AppCompatActivity {
 
     }
 
+
+
     private void addTaskRoom(Spinner spinner, EditText taskTitleField, EditText taskDescriptionInput, Button addTsk) {
 
         addTsk.setOnClickListener(v -> {
@@ -233,6 +237,36 @@ public class AddTask extends AppCompatActivity {
 
     }
 
+    void getTaskForEdit(Spinner spinner, Button addTask, EditText taskTitleField, EditText taskDescriptionInput, Button saveButton){
+        Intent intent = getIntent();
+        String taskId = intent.getStringExtra("taskId");
+        /// get the task
+        Amplify.API.query(ModelQuery.get(com.amplifyframework.datastore.generated.model.Task.class, taskId
+                ), res -> {
+                    if (res.hasData()) {
+                        taskFromAws = res.getData();
+                        // set on click for save
+
+
+                        runOnUiThread(() -> {
+                            /// set text dor input
+                            taskTitleField.setText(res.getData().getTitle());
+                            taskDescriptionInput.setText(res.getData().getBody());
+                            /// set visibility for button
+                            saveButton.setVisibility(View.VISIBLE);
+                            addTask.setVisibility(View.INVISIBLE);
+                            TextView title = findViewById(R.id.text_view_add_task);
+                            title.setText("Edit Task");
+                            setSupportActionBar("Edit Task");
+
+                        });
+
+                    }
+                }
+                , err -> {
+                });
+
+    }
 
 
 }

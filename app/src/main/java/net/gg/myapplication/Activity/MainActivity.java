@@ -74,15 +74,28 @@ public class MainActivity extends AppCompatActivity {
 //        tasksArray = AppDb.getInstance(this).doaTask().getAll();
         RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
         myAdapterForRecyclerView = new MyAdapterForRecyclerView(tasksArray, task ->
+                // on click to item on recycler..
                 TransferTaskName(task.getId()), task -> {
-            Task t1 =Task.builder().body(task.getBody())
-                    .state(task.getState())
-                            .title(task.getTitle())
-                                    .id(task.getId()).build();
-            /// delete icon
-          Amplify.API.mutate(ModelMutation.delete(task),rs->{}
-          ,err->{});
+            // delete button
+            new android.app.AlertDialog.Builder(this)
+                    .setTitle("Delete Task ")
+                    .setMessage("Are you sure to delete " + task.getTitle())
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        /// delete icon
+                        Amplify.API.mutate(ModelMutation.delete(task), rs -> {
+                                    System.out.println("done");
+                                    runOnUiThread(() -> {
+                                        fetchData();
+                                    });
+                                }
+                                , err -> {
+                                });
+                    }).setNegativeButton("Cancel", (dialog, which) -> {
+                        dialog.cancel();
+                    }).setIcon(R.drawable.ic_warning)
+                    .show();
 
+            // edit button
         }, task -> {
             Intent intent = new Intent(getApplicationContext(), AddTask.class);
             intent.putExtra("taskId", task.getId());
@@ -104,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
     private void fetchData() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String teamId = preferences.getString("teamId", "Noteam");
-        System.out.println(teamId + "   main activity");
+
         Amplify.API.query(
 
                 ModelQuery.list(Task.class, Task.TEAM_TASKS_ID.eq(teamId)),
@@ -188,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.text_view_task_by);
         TextView teamName = findViewById(R.id.text_view_team);
         // set the team name on main activity
-        teamName.setText(sharedPreferences.getString("teamName","No team"));
+        teamName.setText(sharedPreferences.getString("teamName", "No team"));
 //        TextView textView2 = findViewById(R.id.text_view_username3);
         textView.setText(sharedPreferences.getString("userName", "Anonymous"));
 //        textView1.setText((sharedPreferences.getString("userName","username")));
@@ -201,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("taskId", id);
         startActivity(intent);
     }
+
     /// sum stuff to configure amplify
     void configureAwsAmplify() {
         try {
@@ -209,10 +223,11 @@ public class MainActivity extends AppCompatActivity {
             Amplify.configure(getApplicationContext());
 
         } catch (AmplifyException e) {
-            Log.e("TAG", "Could not initialize Amplify", e);
+//            Log.e("TAG", "Could not initialize Amplify", e);
         }
 
     }
+
     /// before add task check if the user choose him team
     private void checkTeamName() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -234,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             Intent intent = new Intent(getApplicationContext(), AddTask.class);
-            intent.putExtra("totalTask",String.valueOf(tasksArray.size()));
+            intent.putExtra("totalTask", String.valueOf(tasksArray.size()));
 
             startActivity(intent);
         }

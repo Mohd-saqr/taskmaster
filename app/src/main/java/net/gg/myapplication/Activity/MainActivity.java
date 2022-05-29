@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -62,10 +64,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FunctionalityForBtn();
-        configureAwsAmplify();
         setSupportActionBar();
         getShearedPreference();
         runRecyclerView();
+
 
     }
 
@@ -204,8 +206,20 @@ public class MainActivity extends AppCompatActivity {
             case R.id.setting_menu:
                 Intent intent = new Intent(getApplicationContext(), SettingsPage.class);
                 startActivity(intent);
-
+                finish();
                 return true;
+            case R.id.Logout_menu:
+            {
+                Amplify.Auth.signOut(
+                        () -> {
+                            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                            finish();
+                        },
+                        error -> Log.e("AuthQuickstart", error.toString())
+                );
+                return true;
+
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -231,18 +245,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    /// sum stuff to configure amplify
-    void configureAwsAmplify() {
-        try {
-            Amplify.addPlugin(new AWSApiPlugin());
-            Amplify.addPlugin(new AWSDataStorePlugin());
-            Amplify.configure(getApplicationContext());
 
-        } catch (AmplifyException e) {
-//            Log.e("TAG", "Could not initialize Amplify", e);
-        }
-
-    }
 
     /// before add task check if the user choose him team
     private void checkTeamName() {
@@ -271,7 +274,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+    // Request code for selecting a PDF document.
+    private static final int PICK_PDF_FILE = 2;
 
+
+
+
+
+
+//    private void openFile(Uri pickerInitialUri) {
+//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+//        intent.addCategory(Intent.CATEGORY_OPENABLE);
+//        intent.setType("application/jpeg");
+//
+//        // Optionally, specify a URI for the file that should appear in the
+//        // system file picker when it loads.
+//        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri);
+//
+//        startActivityForResult(intent, PICK_PDF_FILE);
+//    }
 
 }
 

@@ -279,7 +279,7 @@ and after that show only task about this team
 
 
 ## daily change log
-### lab 32:
+### lab 34:
 Build apk for app 
 
 # Main Activity
@@ -312,3 +312,51 @@ Build apk for app
 #  Setting  Activity
 
 ![mainActivity](./app/screenshots/lab-33-setting.png)
+
+
+## daily change log
+### lab 36:
+
+1- create Login page and make user Login .
+2- create SignUp page and make the user SignUp.
+3- make the user logout .
+
+4- display username in main activity .
+
+# Main Activity
+
+![mainActivity](./app/screenshots/lab-33-main.png)
+
+
+# Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175217.png)
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175239.png)
+
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175250.png)
+
+#  Add Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175300.png)
+
+#  All task  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175310.png)
+
+
+#  Setting  Activity
+
+![mainActivity](./app/screenshots/lab-33-setting.png)
+
+# login activity
+![mainActivity](./app/screenshots/Login_Activity.png)
+# SignUp activity
+![mainActivity](./app/screenshots/signUp_activity.png)
+
+

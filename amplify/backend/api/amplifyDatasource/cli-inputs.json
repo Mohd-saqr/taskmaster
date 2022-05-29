@@ -9,6 +9,12 @@
     },
     "conflictResolution": {},
     "apiName": "amplifyDatasource",
-    "gqlSchemaPath": "/mnt/c/Users/M.2070/Desktop/New folder/taskmaster/amplify/backend/api/amplifyDatasource/schema.graphql"
+    "gqlSchemaPath": "/mnt/c/Users/M.2070/Desktop/New folder/taskmaster/amplify/backend/api/amplifyDatasource/schema.graphql",
+    "additionalAuthTypes": [
+      {
+        "mode": "AMAZON_COGNITO_USER_POOLS",
+        "cognitoUserPoolId": "authtaskmasterb626aa9b"
+      }
+    ]
   }
 }

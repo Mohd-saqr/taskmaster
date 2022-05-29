@@ -36,6 +36,11 @@
       "StackName": "amplify-taskmaster-testthree-204841",
       "StackId": "arn:aws:cloudformation:eu-central-1:905622000765:stack/amplify-taskmaster-testthree-204841/5d961790-d609-11ec-96ae-0644236dcd1e",
       "AmplifyAppId": "d3iektiq0p20e9"
+    },
+    "categories": {
+      "auth": {
+        "taskmasterb626aa9b": {}
+      }
     }
   }
 }

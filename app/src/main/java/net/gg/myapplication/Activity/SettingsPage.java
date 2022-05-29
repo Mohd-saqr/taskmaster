@@ -77,11 +77,17 @@ public class SettingsPage extends AppCompatActivity {
             if (textView.getText().length() < 4) {
                 textView.setError("Min length 4 required");
             } else {
-                String username = textView.getText().toString();
-                editor.putString("userName", username);
-                editor.apply();
-                // save username
-                //save team id
+                /**
+                 *    save username
+                  */
+
+//                String username = textView.getText().toString();
+//                editor.putString("userName", username);
+//                editor.apply();
+
+                /**
+                 * alert  changed complete
+                 */
                 Message();
             }
 

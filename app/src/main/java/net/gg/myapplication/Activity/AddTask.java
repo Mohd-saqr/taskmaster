@@ -1,19 +1,28 @@
 package net.gg.myapplication.Activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +33,9 @@ import com.amplifyframework.auth.AuthChannelEventName;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Team;
 import com.amplifyframework.hub.HubChannel;
+import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.github.dhaval2404.imagepicker.util.FileUriUtils;
+
 
 import net.gg.myapplication.Helper.LoadingProgress;
 import net.gg.myapplication.MyModule.Task;
@@ -31,9 +43,21 @@ import net.gg.myapplication.MyModule.Task;
 import net.gg.myapplication.R;
 import net.gg.myapplication.db.AppDb;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 public class AddTask extends AppCompatActivity {
     LoadingProgress progress = new LoadingProgress(AddTask.this);
     com.amplifyframework.datastore.generated.model.Task taskFromAws;
+    private final int IMAGE_TASK_CODE=20;
+
+    Bitmap imageForUpload=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +111,14 @@ public class AddTask extends AppCompatActivity {
 //        addTaskRoom(spinner, taskTitleField, taskDescriptionInput, addTask);
 //        /////  set edit page
 //        editTaskRoom(spinner, addTask, taskTitleField, taskDescriptionInput, saveButton);
+        /**
+         * add image button
+         */
+        Button addImage =findViewById(R.id.btn_add_image);
+        addImage.setOnClickListener(v->{
+            imagePicker();
+
+        });
 
     }
 
@@ -139,6 +171,7 @@ public class AddTask extends AppCompatActivity {
 
 
         addTask.setOnClickListener(v -> {
+
             if (taskTitleField.getText().length() < 3)
                 taskTitleField.setError("Minimum 4 characters");
             else if (taskDescriptionInput.getText().length() < 5)
@@ -154,9 +187,17 @@ public class AddTask extends AppCompatActivity {
                         .build();
                 // add task to data storage aws
                 AddDataStorageAws(task);
-
+                try {
+                    uploadImageAws(task);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
+
+
+
+
 
         });
 
@@ -268,5 +309,65 @@ public class AddTask extends AppCompatActivity {
 
     }
 
+    private void imagePicker(){
+        ImagePicker.with(this)
+                .compress(1024)			//Final image size will be less than 1 MB
+                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .start();
+    }
+
+    /**
+     * this method for picker image
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+            Uri uri =data.getData();
+            ImageView imageView =findViewById(R.id.view_add_image);
+
+            imageView.setImageURI(uri);
+            imageForUpload=convertUri(uri);
+
+    }
+
+    private Bitmap convertUri(Uri uri){
+        Bitmap bitmap = null;
+        ContentResolver contentResolver = getContentResolver();
+        try {
+            if(Build.VERSION.SDK_INT < 28) {
+                bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri);
+            } else {
+                ImageDecoder.Source source = ImageDecoder.createSource(contentResolver, uri);
+                bitmap = ImageDecoder.decodeBitmap(source);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
+    }
+
+    private File convertToFile() throws IOException {
+        File file = new File(getApplicationContext().getFilesDir(), "image.jpg");
+        OutputStream os = new BufferedOutputStream(new FileOutputStream(file));
+        imageForUpload.compress(Bitmap.CompressFormat.JPEG, 100, os);
+        os.close();
+        return file;
+    }
+
+    private void uploadImageAws(com.amplifyframework.datastore.generated.model.Task task) throws IOException {
+        if (imageForUpload!=null){
+            Amplify.Storage.uploadFile(
+                    "image"+task.getId(),
+                    convertToFile(),
+                    result -> Log.i("MyAmplifyApp", "Successfully uploaded: " + result.getKey()),
+                    storageFailure -> Log.e("MyAmplifyApp", "Upload failed", storageFailure)
+            );
+        }
+    }
 
 }

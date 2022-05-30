@@ -5,12 +5,15 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amplifyframework.api.aws.GsonVariablesSerializer;
 import com.amplifyframework.api.graphql.SimpleGraphQLRequest;
@@ -21,17 +24,23 @@ import com.amplifyframework.datastore.generated.model.Task;
 import net.gg.myapplication.Helper.LoadingProgress;
 import net.gg.myapplication.R;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.regex.Matcher;
 
 public class TaskDetailsPage extends AppCompatActivity {
-
+    Intent intent;
+    String taskId ;
     LoadingProgress loadingProgress = new LoadingProgress(TaskDetailsPage.this);
+    File file ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_details_page);
+         intent = getIntent();
+         taskId = intent.getStringExtra("taskId");
+         file = new File(getApplicationContext().getFilesDir() + "/"+taskId+".jpg");
         Fetch();
 
 
@@ -60,8 +69,19 @@ public class TaskDetailsPage extends AppCompatActivity {
 
     private void Fetch() {
         loadingProgress.startLoading();
-        Intent intent = getIntent();
-        String taskId = intent.getStringExtra("taskId");
+
+        if (!file.exists()){
+            Amplify.Storage.downloadFile(
+                    "image"+taskId,
+                    file,
+                    result -> {
+                        convertFileToBitMab(file);
+                    },
+                    error -> {
+                        Toast.makeText(this, "No image for this task", Toast.LENGTH_SHORT).show();
+                    }
+            );
+        }
 
         Amplify.API.query(
                 ModelQuery.get(Task.class, taskId),
@@ -73,11 +93,29 @@ public class TaskDetailsPage extends AppCompatActivity {
                         taskDetails.setText(t.getBody());
                         taskStats.setText("Stats : " + t.getState());
                         setSupportActionBar(t.getTitle());
+                        if (file.exists()){
+                            convertFileToBitMab(file);
+                        }
                         loadingProgress.stopLoading();
                     });
                 },
                 error -> Log.e("MyAmplifyApp", error.toString(), error)
         );
+
+
+
+
+
+    }
+
+    private void convertFileToBitMab(File file){
+        if (file!=null){
+            ImageView imageView =findViewById(R.id.image_view_task_details);
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+            imageView.setImageBitmap(bitmap);
+        }
+
+
     }
 
 

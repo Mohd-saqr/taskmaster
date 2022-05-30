@@ -81,42 +81,39 @@ public class MainActivity extends AppCompatActivity {
             TransferTaskName(task.getId());
 
         },tasksArray,((popupMenu, task) -> {
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()){
-                        //edit
-                        case R.id.eit_task:
-                        {
-                            Intent intent = new Intent(getApplicationContext(), AddTask.class);
-                            intent.putExtra("taskId", task.getId());
-                            startActivity(intent);
-                        }break;
+            popupMenu.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()){
+                    //edit
+                    case R.id.eit_task:
+                    {
+                        Intent intent = new Intent(getApplicationContext(), AddTask.class);
+                        intent.putExtra("taskId", task.getId());
+                        startActivity(intent);
+                    }break;
 
-                        case R.id.delete_task:
-                        {
-                            new android.app.AlertDialog.Builder(MainActivity.this)
-                                    .setTitle("Delete Task ")
-                                    .setMessage("Are you sure to delete " + task.getTitle())
-                                    .setPositiveButton("Yes", (dialog, which) -> {
-                                        /// delete icon
-                                        Amplify.API.mutate(ModelMutation.delete(task), rs -> {
-                                                    System.out.println("done");
-                                                    runOnUiThread(() -> {
-                                                        fetchData();
-                                                    });
-                                                }
-                                                , err -> {
+                    case R.id.delete_task:
+                    {
+                        new android.app.AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Delete Task ")
+                                .setMessage("Are you sure to delete " + task.getTitle())
+                                .setPositiveButton("Yes", (dialog, which) -> {
+                                    /// delete icon
+                                    Amplify.API.mutate(ModelMutation.delete(task), rs -> {
+                                                System.out.println("done");
+                                                runOnUiThread(() -> {
+                                                    fetchData();
                                                 });
-                                    }).setNegativeButton("Cancel", (dialog, which) -> {
-                                        dialog.cancel();
-                                    }).setIcon(R.drawable.ic_warning)
-                                    .show();
-                        }
-                        break;
+                                            }
+                                            , err -> {
+                                            });
+                                }).setNegativeButton("Cancel", (dialog, which) -> {
+                                    dialog.cancel();
+                                }).setIcon(R.drawable.ic_warning)
+                                .show();
                     }
-                    return false;
+                    break;
                 }
+                return false;
             });
         }));
         recyclerView.setAdapter(myAdapterForRecyclerView);
@@ -281,18 +278,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-//    private void openFile(Uri pickerInitialUri) {
-//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//        intent.setType("application/jpeg");
-//
-//        // Optionally, specify a URI for the file that should appear in the
-//        // system file picker when it loads.
-//        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri);
-//
-//        startActivityForResult(intent, PICK_PDF_FILE);
-//    }
 
 }
 

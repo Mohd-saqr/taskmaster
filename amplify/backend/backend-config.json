@@ -60,5 +60,29 @@
         ]
       }
     }
+  },
+  "function": {
+    "S3Triggerd02106b7": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true
+    }
+  },
+  "storage": {
+    "s314191e7c": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "S3Triggerd02106b7",
+          "attributes": [
+            "Name",
+            "Arn",
+            "LambdaExecutionRole"
+          ]
+        }
+      ]
+    }
   }
 }

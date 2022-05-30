@@ -360,3 +360,46 @@ Build apk for app
 ![mainActivity](./app/screenshots/signUp_activity.png)
 
 
+## daily change log
+### lab 37:
+
+1- make user upload the image in add task activity.
+2- display the image in task details activity.
+
+
+# Main Activity
+
+![mainActivity](./app/screenshots/mainActivitylab37.png)
+
+
+
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175239.png)
+
+
+#  Task details Activity
+
+![mainActivity](./app/screenshots/task_details_lab37.png)
+
+#  Add Task Activity
+
+![mainActivity](./app/screenshots/add_task_lab37.png)
+
+#  All task  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175310.png)
+
+
+#  Setting  Activity
+
+![mainActivity](./app/screenshots/lab-33-setting.png)
+
+# login activity
+![mainActivity](./app/screenshots/Login_Activity.png)
+
+# SignUp activity
+![mainActivity](./app/screenshots/signUp_activity.png)
+
+

@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,6 +22,7 @@ import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.google.android.material.snackbar.Snackbar;
 
 import net.gg.myapplication.R;
@@ -32,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
@@ -40,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         configureAwsAmplify();
         functionalityForm();
+
 
     }
 
@@ -104,6 +109,8 @@ public class LoginActivity extends AppCompatActivity {
     /// sum stuff to configure amplify
     void configureAwsAmplify() {
         try {
+            Amplify.addPlugin(new AWSS3StoragePlugin());
+
             Amplify.addPlugin(new AWSCognitoAuthPlugin());
             Amplify.addPlugin(new AWSApiPlugin());
             Amplify.addPlugin(new AWSDataStorePlugin());
@@ -112,6 +119,8 @@ public class LoginActivity extends AppCompatActivity {
         } catch (AmplifyException e) {
 //            Log.e("TAG", "Could not initialize Amplify", e);
         }
+
+
 
     }
 

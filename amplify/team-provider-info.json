@@ -40,6 +40,12 @@
     "categories": {
       "auth": {
         "taskmasterb626aa9b": {}
+      },
+      "function": {
+        "S3Triggerd02106b7": {
+          "deploymentBucketName": "amplify-taskmaster-testthree-204841-deployment",
+          "s3Key": "amplify-builds/S3Triggerd02106b7-4775526f573358613379-build.zip"
+        }
       }
     }
   }

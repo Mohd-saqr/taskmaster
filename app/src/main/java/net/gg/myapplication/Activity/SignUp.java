@@ -72,6 +72,7 @@ public class SignUp extends AppCompatActivity {
                     intent.putExtra("email",email.getText().toString());
                     saveUserName(userName.getText().toString());
                     startActivity(intent);
+                    finish();
 
 
                 },

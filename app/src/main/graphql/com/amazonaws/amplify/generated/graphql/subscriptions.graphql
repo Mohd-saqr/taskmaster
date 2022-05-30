@@ -7,6 +7,9 @@ subscription OnCreateTask {
     state
     createdAt
     updatedAt
+    _version
+    _deleted
+    _lastChangedAt
     teamTasksId
   }
 }
@@ -18,6 +21,9 @@ subscription OnUpdateTask {
     state
     createdAt
     updatedAt
+    _version
+    _deleted
+    _lastChangedAt
     teamTasksId
   }
 }
@@ -29,6 +35,9 @@ subscription OnDeleteTask {
     state
     createdAt
     updatedAt
+    _version
+    _deleted
+    _lastChangedAt
     teamTasksId
   }
 }
@@ -44,12 +53,19 @@ subscription OnCreateTeam {
         state
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         teamTasksId
       }
       nextToken
+      startedAt
     }
     createdAt
     updatedAt
+    _version
+    _deleted
+    _lastChangedAt
   }
 }
 subscription OnUpdateTeam {
@@ -64,12 +80,19 @@ subscription OnUpdateTeam {
         state
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         teamTasksId
       }
       nextToken
+      startedAt
     }
     createdAt
     updatedAt
+    _version
+    _deleted
+    _lastChangedAt
   }
 }
 subscription OnDeleteTeam {
@@ -84,11 +107,18 @@ subscription OnDeleteTeam {
         state
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         teamTasksId
       }
       nextToken
+      startedAt
     }
     createdAt
     updatedAt
+    _version
+    _deleted
+    _lastChangedAt
   }
 }

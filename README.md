@@ -402,4 +402,55 @@ Build apk for app
 # SignUp activity
 ![mainActivity](./app/screenshots/signUp_activity.png)
 
+## daily change log
+### lab 38:
+
+make the user share  image  from another application to my application 
+
+
+# Main Activity
+
+![mainActivity](./app/screenshots/mainActivitylab37.png)
+
+
+
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175239.png)
+
+
+#  Task details Activity
+
+![mainActivity](./app/screenshots/task_details_lab37.png)
+
+#  Add Task Activity
+
+![mainActivity](./app/screenshots/add_task_lab37.png)
+
+#  All task  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175310.png)
+
+
+#  Setting  Activity
+
+![mainActivity](./app/screenshots/lab-33-setting.png)
+
+# login activity
+![mainActivity](./app/screenshots/Login_Activity.png)
+
+# SignUp activity
+![mainActivity](./app/screenshots/signUp_activity.png)
+
+# Share intent Activity 
+
+![mainActivity](./app/screenshots/intent.png)
+
+![mainActivity](./app/screenshots/intent%202.png)
+
+
+
+
+
 

@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar();
         getShearedPreference();
         runRecyclerView();
+        startActivityIntent();
 
 
     }
@@ -271,8 +272,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    // Request code for selecting a PDF document.
-    private static final int PICK_PDF_FILE = 2;
+
+    private void startActivityIntent(){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/*");
+
+    }
 
 
 

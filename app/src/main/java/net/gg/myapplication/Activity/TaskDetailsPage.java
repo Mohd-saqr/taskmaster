@@ -53,6 +53,12 @@ public class TaskDetailsPage extends AppCompatActivity {
         seeLocation.setOnClickListener(v->{
             if (location==null){
                 Toast.makeText(getApplicationContext(), "No Location added", Toast.LENGTH_SHORT).show();
+            }else {
+                Intent ll = new Intent(getApplicationContext(),MapsActivity.class);
+                System.out.println(location+"testrrrr");
+                ll.putExtra("latitude_D",location.getLatitude());
+                ll.putExtra("longitude_D",location.getLongitude());
+                startActivity(ll);
             }
 
         });

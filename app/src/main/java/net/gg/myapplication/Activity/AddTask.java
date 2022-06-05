@@ -11,7 +11,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,8 +26,10 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -34,6 +38,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
@@ -46,9 +51,15 @@ import com.amplifyframework.datastore.generated.model.LocationTask;
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 
 
@@ -96,7 +107,11 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback {
         setSupportActionBar("Add Task");
         getTeamId();
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(this);
-        checkPermissionRequest();
+        if (checkPermissions()) {
+            getLastLocation();
+        }else {
+            requestPermissions();
+        }
         try {
             getIntentInflate();
         } catch (IOException e) {
@@ -120,12 +135,9 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback {
         Intent intent = getIntent();
         TotalTask.setText("Total Task : " + getIntent().getStringExtra("totalTask"));
         // check the permission and get the device location
-        if (locationPermissionGranted){
-            getDeviceLocation();
 
-        }else {
-            checkPermissionRequest();
-        }
+
+
 
         super.onResume();
     }
@@ -172,12 +184,14 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback {
 
         Button setLocation = findViewById(R.id.btn_set_location);
         setLocation.setOnClickListener(v->{
-            if (locationPermissionGranted){
+            if (isLocationEnabled()){
                 Intent intent =  new Intent(getApplicationContext(),Location_activity.class);
+                intent.putExtra("longitude",lastKnownLocation.getLongitude());
+                intent.putExtra("latitude",lastKnownLocation.getLatitude());
 
                 startActivity(intent);
             }else {
-                checkPermissionRequest();
+                requestPermissions();
             }
         });
 
@@ -481,99 +495,123 @@ public class AddTask extends AppCompatActivity implements OnMapReadyCallback {
 
     }
 
-    private final ActivityResultLauncher<String> requestPermissionLauncher =
+    private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
                     // Permission is granted. Continue the action or workflow in your
                     // app.
-
                 } else {
-                    checkPermissionRequest();
+                    // Explain to the user that the feature is unavailable because the
+                    // features requires a permission that the user has denied. At the
+                    // same time, respect the user's decision. Don't link to system
+                    // settings in an effort to convince the user to change their
+                    // decision.
                 }
-
             });
 
-    public void makePermissionRequest() {
-        ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION}, 44);    }
-    public void checkPermissionRequest() {
-        if (ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED
-        ) {
-            locationPermissionGranted=true;
-
-        } else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            makePermissionRequest();
-        } else {
-            showAlertDialog();
-        }
-    }
-
-    public void showAlertDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("This Permission is require");
-                alertDialogBuilder.setPositiveButton("Yes",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                Intent i = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + BuildConfig.APPLICATION_ID));
-                                startActivity(i);
-                            }
-                        });
-
-        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-
-    }
 
 
 
-    private void getDeviceLocation() {
-        /*
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
-         */
-        try {
-            if (locationPermissionGranted) {
-                com.google.android.gms.tasks.Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
+
+
+
+
+
+
+
+
+    @SuppressLint("MissingPermission")
+    private void getLastLocation() {
+        // check if permissions are given
+        if (checkPermissions()) {
+
+            // check if location is enabled
+            if (isLocationEnabled()) {
+
+                // getting last
+                // location from
+                // FusedLocationClient
+                // object
+                fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+
                     @Override
                     public void onComplete(@NonNull com.google.android.gms.tasks.Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
-                            lastKnownLocation = task.getResult();
-                            if (lastKnownLocation != null) {
-                                TextView location =findViewById(R.id.text_location_name);
-                                location.setText("Your current  Location : Completely Added");
-
-
-
-                            }
+                        Location location = task.getResult();
+                        if (location == null) {
+                            requestNewLocationData();
                         } else {
-                            Log.d("TAG", "Current location is null. Using defaults.");
-                            Log.e("TAG", "Exception: %s", task.getException());
-
+                            TextView locationText =findViewById(R.id.text_location_name);
+                            locationText.setText("Your current  Location : Completely Added");
+                            lastKnownLocation=task.getResult();
+                            System.out.println(lastKnownLocation);
                         }
                     }
                 });
+            } else {
+                Toast.makeText(this, "Please turn on" + " your location...", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
             }
-        } catch (SecurityException e)  {
-            Log.e("Exception: %s", e.getMessage(), e);
+        } else {
+            // if permissions aren't available,
+            // request for permissions
+            requestPermissions();
         }
+
     }
 
 
+    private boolean checkPermissions() {
+        return ActivityCompat
+                .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED
+                &&
+                ActivityCompat
+                        .checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED;
+
+        // If we want background location
+        // on Android 10.0 and higher,
+        // use:
+        // ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 44) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLastLocation();
+            }
+        }
+    }
+
+    private boolean isLocationEnabled() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+    }
+    @SuppressLint("MissingPermission")
+    private void requestNewLocationData() {
+
+        // Initializing LocationRequest
+        // object with appropriate methods
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(5);
+        mLocationRequest.setFastestInterval(0);
+        mLocationRequest.setNumUpdates(1);
+
+        // setting LocationRequest
+        // on FusedLocationClient
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+    }
 
 }

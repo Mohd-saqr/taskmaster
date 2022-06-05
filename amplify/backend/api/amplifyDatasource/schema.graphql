@@ -7,7 +7,14 @@ type Task @model @auth(rules: [{ allow: public, operations: [create, read, updat
   title: String
   body:String
   state:String
+  location: LocationTask @hasOne
 }
+type LocationTask @model @auth(rules: [{ allow: public, operations: [create, read, update] }]){
+  Longitude:String
+  Latitude:String
+
+}
+
 
 type Team @model @auth(rules: [{ allow: public, operations: [create, read, update] }]){
   id:ID!

@@ -1,14 +1,26 @@
 package net.gg.myapplication.Activity;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
+
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,10 +42,17 @@ import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
+import com.amplifyframework.datastore.generated.model.LocationTask;
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
 
 
+import net.gg.myapplication.BuildConfig;
 import net.gg.myapplication.Helper.LoadingProgress;
 import net.gg.myapplication.MyModule.Task;
 
@@ -46,13 +65,27 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class AddTask extends AppCompatActivity {
+public class AddTask extends AppCompatActivity implements OnMapReadyCallback {
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private static final int REQUEST_PERMISSION = 0;
     LoadingProgress progress = new LoadingProgress(AddTask.this);
     com.amplifyframework.datastore.generated.model.Task taskFromAws;
     private final int IMAGE_TASK_CODE = 20;
 
+    boolean locationPermissionGranted =false;
+
     Bitmap imageForUpload = null;
     ImageView imageView;
+    private GoogleMap googleMap;
+
+    private FusedLocationProviderClient fusedLocationProviderClient;
+
+    private Location lastKnownLocation;
+
+    LocationTask locationTask;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +95,8 @@ public class AddTask extends AppCompatActivity {
         FunctionalityForBtn();
         setSupportActionBar("Add Task");
         getTeamId();
-
+        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(this);
+        checkPermissionRequest();
         try {
             getIntentInflate();
         } catch (IOException e) {
@@ -85,6 +119,14 @@ public class AddTask extends AppCompatActivity {
         TextView TotalTask = findViewById(R.id.text_view_total_task);
         Intent intent = getIntent();
         TotalTask.setText("Total Task : " + getIntent().getStringExtra("totalTask"));
+        // check the permission and get the device location
+        if (locationPermissionGranted){
+            getDeviceLocation();
+
+        }else {
+            checkPermissionRequest();
+        }
+
         super.onResume();
     }
 
@@ -126,6 +168,17 @@ public class AddTask extends AppCompatActivity {
         addImage.setOnClickListener(v -> {
             imagePicker();
 
+        });
+
+        Button setLocation = findViewById(R.id.btn_set_location);
+        setLocation.setOnClickListener(v->{
+            if (locationPermissionGranted){
+                Intent intent =  new Intent(getApplicationContext(),Location_activity.class);
+
+                startActivity(intent);
+            }else {
+                checkPermissionRequest();
+            }
         });
 
     }
@@ -187,11 +240,22 @@ public class AddTask extends AppCompatActivity {
             else {
 
                 progress.startLoading();
+
+                 locationTask = LocationTask
+                        .builder().latitude(String.valueOf(lastKnownLocation.getLatitude()))
+                        .longitude(String.valueOf(lastKnownLocation.getLongitude()))
+                        .build();
+                Amplify.API.query(ModelMutation.create(locationTask),s->{
+                    System.out.println("Location done saved ");
+                },err->{
+
+                });
                 com.amplifyframework.datastore.generated.model.Task task = com.amplifyframework.datastore.generated.model.Task.builder().
                         title(taskTitleField.getText().toString())
                         .state(spinner.getSelectedItem().toString()).
                         body(taskDescriptionInput.getText().toString())
                         .teamTasksId(TeamId)
+                        .taskLocationId(locationTask.getId())
                         .build();
                 // add task to data storage aws
                 AddDataStorageAws(task);
@@ -408,5 +472,108 @@ public class AddTask extends AppCompatActivity {
 
 
     }
+
+    /// this for google map
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        this.googleMap=googleMap;
+
+    }
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    // Permission is granted. Continue the action or workflow in your
+                    // app.
+
+                } else {
+                    checkPermissionRequest();
+                }
+
+            });
+
+    public void makePermissionRequest() {
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION}, 44);    }
+    public void checkPermissionRequest() {
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED
+        ) {
+            locationPermissionGranted=true;
+
+        } else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            makePermissionRequest();
+        } else {
+            showAlertDialog();
+        }
+    }
+
+    public void showAlertDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("This Permission is require");
+                alertDialogBuilder.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                Intent i = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + BuildConfig.APPLICATION_ID));
+                                startActivity(i);
+                            }
+                        });
+
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+    }
+
+
+
+    private void getDeviceLocation() {
+        /*
+         * Get the best and most recent location of the device, which may be null in rare
+         * cases when a location is not available.
+         */
+        try {
+            if (locationPermissionGranted) {
+                com.google.android.gms.tasks.Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
+                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull com.google.android.gms.tasks.Task<Location> task) {
+                        if (task.isSuccessful()) {
+                            // Set the map's camera position to the current location of the device.
+                            lastKnownLocation = task.getResult();
+                            if (lastKnownLocation != null) {
+                                TextView location =findViewById(R.id.text_location_name);
+                                location.setText("Your current  Location : Completely Added");
+
+
+
+                            }
+                        } else {
+                            Log.d("TAG", "Current location is null. Using defaults.");
+                            Log.e("TAG", "Exception: %s", task.getException());
+
+                        }
+                    }
+                });
+            }
+        } catch (SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage(), e);
+        }
+    }
+
+
 
 }

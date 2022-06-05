@@ -122,6 +122,20 @@
 
                 android:minHeight="48dp" />
 
+            <TextView
+                android:id="@+id/text_location_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=" Your current  Location : Unavailable "
+                android:layout_marginBottom="15dp"/>
+
+            <Button
+                android:id="@+id/btn_set_location"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text=" Set Your Location"
+                android:layout_marginBottom="15dp"/>
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -144,6 +158,23 @@
 
                     app:layout_constraintStart_toStartOf="parent"
                     tools:layout_editor_absoluteY="0dp" />
+                <Button
+                    android:id="@+id/btn_add_location"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_brown"
+                    android:filterTouchesWhenObscured="false"
+                    android:focusableInTouchMode="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="Save"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:visibility="invisible"
+
+                    />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -206,6 +237,8 @@
             app:layout_constraintEnd_toStartOf="@+id/btn_submit_add_task"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_add_image" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

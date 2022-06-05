@@ -2,6 +2,8 @@ package net.gg.myapplication.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.location.Location;
@@ -27,10 +29,8 @@ import com.google.android.gms.tasks.Task;
 import net.gg.myapplication.R;
 
 public class Location_activity extends AppCompatActivity implements OnMapReadyCallback {
-    GoogleMap googleMap;
+    GoogleMap Map;
 
-    private double latitude;
-    private double longitude;
     GoogleMapOptions options ;
     Location lastKnownLocation ;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -44,7 +44,8 @@ public class Location_activity extends AppCompatActivity implements OnMapReadyCa
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.map1);
+
         mapFragment.getMapAsync(this);
 
 
@@ -62,12 +63,15 @@ public class Location_activity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
+
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        this.googleMap=googleMap;
-        this.googleMap.setBuildingsEnabled(true);
+        Map=googleMap;
 
-        this.googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        Map.setBuildingsEnabled(true);
+
+        Map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         getDeviceLocation();
 
 
@@ -88,28 +92,52 @@ public class Location_activity extends AppCompatActivity implements OnMapReadyCa
          */
 
 
-               fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-                   @Override
-                   public void onComplete(@NonNull Task<Location> task) {
-                       Location location = task.getResult();
-                       if (location == null) {
+//               fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+//                   @Override
+//                   public void onComplete(@NonNull Task<Location> task) {
+//                       Location location = task.getResult();
+//                       if (location == null) {
+//
+//                       } else {
+//
+//                       }
+//                   }
+//               });
 
-                       } else {
-                           latitude = location.getLatitude();
-                           longitude = location.getLongitude();
 
-                           LatLng coordinate = new LatLng(latitude, longitude);
 
-                           googleMap.addMarker(new MarkerOptions()
-                                   .position(coordinate)
-                                   .title("Marker"));
+        Intent i =getIntent();
+        double latitude;
+        double longitude;
+        if (i.hasExtra("details_location")){
+            latitude = i.getDoubleExtra("latitude_D",-31.954301);
+            longitude =i.getDoubleExtra("longitude_D",35.935330);
 
-//                            googleMap.moveCamera(CameraUpdateFactory.newLatLng(coordinate));
-                           googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 12.0f));
-                       }
-                   }
-               });
+            LatLng coordinate = new LatLng(latitude, longitude);
+            System.out.println("form detals page");
+            Map.addMarker(new MarkerOptions().position(coordinate).title("Your Location"));
+            Map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate,12.0f));
 
+        }else if (i.hasExtra("latitude")){
+            latitude = i.getDoubleExtra("latitude",-31.954301);
+            longitude =i.getDoubleExtra("longitude",35.935330);
+
+            LatLng coordinate = new LatLng(latitude, longitude);
+
+            Map.addMarker(new MarkerOptions().position(coordinate).title("Your Location"));
+            Map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate,12.0f));
+
+        }else {
+            latitude =-31.954301;
+            longitude = 35.935330;
+
+            System.out.println("000000000002515");
+
+            LatLng coordinate = new LatLng(latitude, longitude);
+
+            Map.addMarker(new MarkerOptions().position(coordinate).title("Your Location"));
+            Map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 12.0f));
+        }
         }
 
 

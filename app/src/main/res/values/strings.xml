@@ -16,4 +16,5 @@
         <item>Team2</item>
         <item>Team3</item>
     </string-array>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

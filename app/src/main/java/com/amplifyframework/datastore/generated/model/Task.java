@@ -1,5 +1,6 @@
 package com.amplifyframework.datastore.generated.model;
 
+import com.amplifyframework.core.model.annotations.HasOne;
 import com.amplifyframework.core.model.temporal.Temporal;
 
 import java.util.List;
@@ -29,13 +30,16 @@ public final class Task implements Model {
   public static final QueryField TITLE = field("Task", "title");
   public static final QueryField BODY = field("Task", "body");
   public static final QueryField STATE = field("Task", "state");
+  public static final QueryField TASK_LOCATION_ID = field("Task", "taskLocationId");
   public static final QueryField TEAM_TASKS_ID = field("Task", "teamTasksId");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String") String title;
   private final @ModelField(targetType="String") String body;
   private final @ModelField(targetType="String") String state;
+  private final @ModelField(targetType="LocationTask") @HasOne(associatedWith = "id", type = LocationTask.class) LocationTask location = null;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
+  private final @ModelField(targetType="ID") String taskLocationId;
   private final @ModelField(targetType="ID") String teamTasksId;
   public String getId() {
       return id;
@@ -53,6 +57,10 @@ public final class Task implements Model {
       return state;
   }
   
+  public LocationTask getLocation() {
+      return location;
+  }
+  
   public Temporal.DateTime getCreatedAt() {
       return createdAt;
   }
@@ -61,15 +69,20 @@ public final class Task implements Model {
       return updatedAt;
   }
   
+  public String getTaskLocationId() {
+      return taskLocationId;
+  }
+  
   public String getTeamTasksId() {
       return teamTasksId;
   }
   
-  private Task(String id, String title, String body, String state, String teamTasksId) {
+  private Task(String id, String title, String body, String state, String taskLocationId, String teamTasksId) {
     this.id = id;
     this.title = title;
     this.body = body;
     this.state = state;
+    this.taskLocationId = taskLocationId;
     this.teamTasksId = teamTasksId;
   }
   
@@ -87,6 +100,7 @@ public final class Task implements Model {
               ObjectsCompat.equals(getState(), task.getState()) &&
               ObjectsCompat.equals(getCreatedAt(), task.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), task.getUpdatedAt()) &&
+              ObjectsCompat.equals(getTaskLocationId(), task.getTaskLocationId()) &&
               ObjectsCompat.equals(getTeamTasksId(), task.getTeamTasksId());
       }
   }
@@ -100,6 +114,7 @@ public final class Task implements Model {
       .append(getState())
       .append(getCreatedAt())
       .append(getUpdatedAt())
+      .append(getTaskLocationId())
       .append(getTeamTasksId())
       .toString()
       .hashCode();
@@ -115,6 +130,7 @@ public final class Task implements Model {
       .append("state=" + String.valueOf(getState()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()) + ", ")
+      .append("taskLocationId=" + String.valueOf(getTaskLocationId()) + ", ")
       .append("teamTasksId=" + String.valueOf(getTeamTasksId()))
       .append("}")
       .toString();
@@ -138,6 +154,7 @@ public final class Task implements Model {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -147,6 +164,7 @@ public final class Task implements Model {
       title,
       body,
       state,
+      taskLocationId,
       teamTasksId);
   }
   public interface BuildStep {
@@ -155,6 +173,7 @@ public final class Task implements Model {
     BuildStep title(String title);
     BuildStep body(String body);
     BuildStep state(String state);
+    BuildStep taskLocationId(String taskLocationId);
     BuildStep teamTasksId(String teamTasksId);
   }
   
@@ -164,6 +183,7 @@ public final class Task implements Model {
     private String title;
     private String body;
     private String state;
+    private String taskLocationId;
     private String teamTasksId;
     @Override
      public Task build() {
@@ -174,6 +194,7 @@ public final class Task implements Model {
           title,
           body,
           state,
+          taskLocationId,
           teamTasksId);
     }
     
@@ -196,6 +217,12 @@ public final class Task implements Model {
     }
     
     @Override
+     public BuildStep taskLocationId(String taskLocationId) {
+        this.taskLocationId = taskLocationId;
+        return this;
+    }
+    
+    @Override
      public BuildStep teamTasksId(String teamTasksId) {
         this.teamTasksId = teamTasksId;
         return this;
@@ -213,11 +240,12 @@ public final class Task implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String title, String body, String state, String teamTasksId) {
+    private CopyOfBuilder(String id, String title, String body, String state, String taskLocationId, String teamTasksId) {
       super.id(id);
       super.title(title)
         .body(body)
         .state(state)
+        .taskLocationId(taskLocationId)
         .teamTasksId(teamTasksId);
     }
     
@@ -234,6 +262,11 @@ public final class Task implements Model {
     @Override
      public CopyOfBuilder state(String state) {
       return (CopyOfBuilder) super.state(state);
+    }
+    
+    @Override
+     public CopyOfBuilder taskLocationId(String taskLocationId) {
+      return (CopyOfBuilder) super.taskLocationId(taskLocationId);
     }
     
     @Override

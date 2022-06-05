@@ -8,12 +8,23 @@ mutation CreateTask(
     title
     body
     state
+    location {
+      Longitude
+      Latitude
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
     createdAt
     updatedAt
     _version
     _deleted
     _lastChangedAt
     teamTasksId
+    taskLocationId
   }
 }
 mutation UpdateTask(
@@ -25,12 +36,23 @@ mutation UpdateTask(
     title
     body
     state
+    location {
+      Longitude
+      Latitude
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
     createdAt
     updatedAt
     _version
     _deleted
     _lastChangedAt
     teamTasksId
+    taskLocationId
   }
 }
 mutation DeleteTask(
@@ -42,12 +64,68 @@ mutation DeleteTask(
     title
     body
     state
+    location {
+      Longitude
+      Latitude
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
     createdAt
     updatedAt
     _version
     _deleted
     _lastChangedAt
     teamTasksId
+    taskLocationId
+  }
+}
+mutation CreateLocationTask(
+  $input: CreateLocationTaskInput!
+  $condition: ModelLocationTaskConditionInput
+) {
+  createLocationTask(input: $input, condition: $condition) {
+    Longitude
+    Latitude
+    id
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+  }
+}
+mutation UpdateLocationTask(
+  $input: UpdateLocationTaskInput!
+  $condition: ModelLocationTaskConditionInput
+) {
+  updateLocationTask(input: $input, condition: $condition) {
+    Longitude
+    Latitude
+    id
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+  }
+}
+mutation DeleteLocationTask(
+  $input: DeleteLocationTaskInput!
+  $condition: ModelLocationTaskConditionInput
+) {
+  deleteLocationTask(input: $input, condition: $condition) {
+    Longitude
+    Latitude
+    id
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
   }
 }
 mutation CreateTeam(
@@ -69,6 +147,7 @@ mutation CreateTeam(
         _deleted
         _lastChangedAt
         teamTasksId
+        taskLocationId
       }
       nextToken
       startedAt
@@ -99,6 +178,7 @@ mutation UpdateTeam(
         _deleted
         _lastChangedAt
         teamTasksId
+        taskLocationId
       }
       nextToken
       startedAt
@@ -129,6 +209,7 @@ mutation DeleteTeam(
         _deleted
         _lastChangedAt
         teamTasksId
+        taskLocationId
       }
       nextToken
       startedAt

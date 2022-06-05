@@ -5,12 +5,23 @@ query GetTask($id: ID!) {
     title
     body
     state
+    location {
+      Longitude
+      Latitude
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
     createdAt
     updatedAt
     _version
     _deleted
     _lastChangedAt
     teamTasksId
+    taskLocationId
   }
 }
 query ListTasks(
@@ -24,12 +35,23 @@ query ListTasks(
       title
       body
       state
+      location {
+        Longitude
+        Latitude
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
       teamTasksId
+      taskLocationId
     }
     nextToken
     startedAt
@@ -52,12 +74,81 @@ query SyncTasks(
       title
       body
       state
+      location {
+        Longitude
+        Latitude
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
       teamTasksId
+      taskLocationId
+    }
+    nextToken
+    startedAt
+  }
+}
+query GetLocationTask($id: ID!) {
+  getLocationTask(id: $id) {
+    Longitude
+    Latitude
+    id
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+  }
+}
+query ListLocationTasks(
+  $filter: ModelLocationTaskFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listLocationTasks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      Longitude
+      Latitude
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+    nextToken
+    startedAt
+  }
+}
+query SyncLocationTasks(
+  $filter: ModelLocationTaskFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncLocationTasks(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      Longitude
+      Latitude
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
     nextToken
     startedAt
@@ -79,6 +170,7 @@ query GetTeam($id: ID!) {
         _deleted
         _lastChangedAt
         teamTasksId
+        taskLocationId
       }
       nextToken
       startedAt

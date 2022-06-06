@@ -502,6 +502,65 @@ location retrieved and included as part of the saved Task.
 ![mainActivity](./app/screenshots/map_activity.png)
 
 
+## daily change log
+### lab 41:
+
+Added sum stuff :
+ 1 - aws AnalyticsEvent
+
+ 2- PREDICTIONS 
+
+ a- translate text 
+
+b - text tp speech 
+
+
+# Main Activity
+
+![mainActivity](./app/screenshots/mainActivitylab37.png)
+
+
+
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175239.png)
+
+
+#  Task details Activity
+
+![mainActivity](./app/screenshots/lab41.png)
+
+#  Add Task Activity
+
+![mainActivity](./app/screenshots/add_task_lab37.png)
+
+#  All task  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175310.png)
+
+
+#  Setting  Activity
+
+![mainActivity](./app/screenshots/lab-33-setting.png)
+
+# login activity
+![mainActivity](./app/screenshots/Login_Activity.png)
+
+# SignUp activity
+![mainActivity](./app/screenshots/signUp_activity.png)
+
+# Share intent Activity
+
+![mainActivity](./app/screenshots/intent.png)
+
+![mainActivity](./app/screenshots/intent%202.png)
+
+# Map activity
+
+![mainActivity](./app/screenshots/map_activity.png)
+
+
 
 
 

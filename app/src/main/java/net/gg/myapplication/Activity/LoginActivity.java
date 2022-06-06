@@ -18,10 +18,13 @@ import android.widget.TextView;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.DevicesHandler;
 import com.amplifyframework.AmplifyException;
+import com.amplifyframework.analytics.AnalyticsEvent;
+import com.amplifyframework.analytics.pinpoint.AWSPinpointAnalyticsPlugin;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
+import com.amplifyframework.predictions.aws.AWSPredictionsPlugin;
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -45,7 +48,18 @@ public class LoginActivity extends AppCompatActivity {
         configureAwsAmplify();
         functionalityForm();
 
+        recordUserOpenApp();
 
+
+    }
+
+    private void recordUserOpenApp() {
+        AnalyticsEvent event = AnalyticsEvent.builder()
+                .name("OpenApp")
+                .addProperty("Successful", true)
+                .build();
+
+        Amplify.Analytics.recordEvent(event);
     }
 
     private void functionalityForm() {
@@ -113,6 +127,8 @@ public class LoginActivity extends AppCompatActivity {
 
             Amplify.addPlugin(new AWSCognitoAuthPlugin());
             Amplify.addPlugin(new AWSApiPlugin());
+            Amplify.addPlugin(new AWSPinpointAnalyticsPlugin(getApplication()));
+            Amplify.addPlugin(new AWSPredictionsPlugin());
             Amplify.addPlugin(new AWSDataStorePlugin());
             Amplify.configure(getApplicationContext());
 

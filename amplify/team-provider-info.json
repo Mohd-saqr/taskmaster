@@ -39,7 +39,8 @@
     },
     "categories": {
       "auth": {
-        "taskmasterb626aa9b": {}
+        "taskmasterb626aa9b": {},
+        "true": {}
       },
       "function": {
         "S3Triggerd02106b7": {

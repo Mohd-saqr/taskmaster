@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.media.MediaParser;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +30,11 @@ import net.gg.myapplication.Helper.LoadingProgress;
 import net.gg.myapplication.R;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collections;
 import java.util.regex.Matcher;
 
@@ -38,12 +45,15 @@ public class TaskDetailsPage extends AppCompatActivity {
     File file ;
     LocationTask location;
     Button seeLocation;
-
+    MediaPlayer mediaPlayer = new MediaPlayer();
+    TextView taskDetails;
+    boolean translated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_details_page);
+        taskDetails = findViewById(R.id.text_view_task_body);
          intent = getIntent();
          taskId = intent.getStringExtra("taskId");
          seeLocation=findViewById(R.id.btn_see_task_location);
@@ -63,9 +73,65 @@ public class TaskDetailsPage extends AppCompatActivity {
 
         });
 
+        ImageView hearing =findViewById(R.id.icon_hearing);
+        hearing.setOnClickListener(v->{
+
+            Amplify.Predictions.convertTextToSpeech(
+                    t.getBody(),
+                    result -> playAudio(result.getAudioData()),
+                    error -> Log.e("MyAmplifyApp", "Conversion failed", error)
+
+            );
+        });
+
+        ImageView translate =findViewById(R.id.icon_Translate);
+        translate.setOnClickListener(v->{
+
+            if (!translated){
+                Amplify.Predictions.translateText(taskDetails.getText().toString(),
+                        result ->{
+                    translated=true;
+                            runOnUiThread(() -> {
+                                taskDetails.setText(result.getTranslatedText());
+                            });
+                        },
+                        error -> Log.e("MyAmplifyApp", "Translation failed", error)
+                );
+            }else {
+                taskDetails.setText(t.getBody());
+                translated=false;
+            }
+
+        });
 
 
 
+
+
+
+
+
+
+
+    }
+
+    private void playAudio(InputStream data) {
+
+        File mp3File = new File(getCacheDir(), "audio.mp3");
+
+        try (OutputStream out = new FileOutputStream(mp3File)) {
+            byte[] buffer = new byte[8 * 1_024];
+            int bytesRead;
+            while ((bytesRead = data.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+            mediaPlayer.reset();
+            mediaPlayer.setOnPreparedListener(MediaPlayer::start);
+            mediaPlayer.setDataSource(new FileInputStream(mp3File).getFD());
+            mediaPlayer.prepareAsync();
+        } catch (IOException error) {
+            Log.e("MyAmplifyApp", "Error writing audio file", error);
+        }
     }
 
     @Override
@@ -110,7 +176,7 @@ public class TaskDetailsPage extends AppCompatActivity {
                 response -> {
                     t = response.getData();
                     runOnUiThread(() -> {
-                        TextView taskDetails = findViewById(R.id.text_view_task_body);
+
                         TextView taskStats = findViewById(R.id.text_view_task_stats);
                         taskDetails.setText(t.getBody());
                         taskStats.setText("Stats : " + t.getState());

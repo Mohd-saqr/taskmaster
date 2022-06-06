@@ -65,6 +65,11 @@ dependencies {
 
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
 
+    /// aws anlystics
+    implementation 'com.amplifyframework:aws-analytics-pinpoint:1.35.4'
+    implementation 'com.amplifyframework:aws-predictions:1.35.4'
+
+
 
 
 

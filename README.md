@@ -561,6 +561,67 @@ b - text tp speech
 ![mainActivity](./app/screenshots/map_activity.png)
 
 
+## daily change log
+### lab 42:
+
+Added sum stuff :
+1 - Banner ads
+![mainActivity](./app/screenshots/ads_main.png)
+
+2- Interstitial Ad
+![mainActivity](./app/screenshots/initli_ads.png)
+
+a- Rewarded Ad
+![mainActivity](./app/screenshots/reward_ads.png)
+
+
+
+# Main Activity
+
+![mainActivity](./app/screenshots/ads_main.png)
+
+
+
+
+#  Task Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175239.png)
+
+
+#  Task details Activity
+
+![mainActivity](./app/screenshots/lab41.png)
+
+#  Add Task Activity
+
+![mainActivity](./app/screenshots/add_task_lab37.png)
+
+#  All task  Activity
+
+![mainActivity](./app/screenshots/Screenshot_20220507_175310.png)
+
+
+#  Setting  Activity
+
+![mainActivity](./app/screenshots/lab-33-setting.png)
+
+# login activity
+![mainActivity](./app/screenshots/Login_Activity.png)
+
+# SignUp activity
+![mainActivity](./app/screenshots/signUp_activity.png)
+
+# Share intent Activity
+
+![mainActivity](./app/screenshots/intent.png)
+
+![mainActivity](./app/screenshots/intent%202.png)
+
+# Map activity
+
+![mainActivity](./app/screenshots/map_activity.png)
+
+
 
 
 

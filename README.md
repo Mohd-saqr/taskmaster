@@ -314,6 +314,9 @@ Build apk for app
 ![mainActivity](./app/screenshots/lab-33-setting.png)
 
 
+## Notes on Play deployment 
+
+
 ## daily change log
 ### lab 36:
 
